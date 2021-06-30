@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms" Version="9.0.0-beta004" />
+        <PackageReference Include="Umbraco.Cms.SqlCe" Version="9.0.0-beta004" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Compile Remove="umbraco\Data\**" />
+        <Compile Remove="umbraco\logs\**" />
+        <Compile Remove="umbraco\MediaCache\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Remove="umbraco\Data\**" />
+        <EmbeddedResource Remove="umbraco\logs\**" />
+        <EmbeddedResource Remove="umbraco\MediaCache\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="umbraco\Data\**" />
+        <None Remove="umbraco\logs\**" />
+        <None Remove="umbraco\MediaCache\**" />
+        <None Include="config\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </None>
+        <None Include="umbraco\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="umbraco\Data\**" />
+        <Content Remove="umbraco\logs\**" />
+        <Content Remove="umbraco\MediaCache\**" />
+    </ItemGroup>
+    <Import Project="..\Bergmania.OpenStreetMap\build\Bergmania.OpenStreetMap.targets" />
+    <ItemGroup>
+      <ProjectReference Include="..\Bergmania.OpenStreetMap\Bergmania.OpenStreetMap.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210626.json" />
+      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210627.json" />
+      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210628.json" />
+    </ItemGroup>
+
+    <!-- Set this to true if ModelsBuilder mode is not InMemoryAuto-->
+    <PropertyGroup>
+        <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    </PropertyGroup>
+</Project>

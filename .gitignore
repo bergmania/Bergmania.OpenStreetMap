@@ -1,0 +1,46 @@
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+/Bergmania.OpenStreetMap.Testsite/App_Plugins/
+/Bergmania.OpenStreetMap.Testsite/umbraco/Logs
+/Bergmania.OpenStreetMap.Testsite/umbraco/Data/TEMP
+/Bergmania.OpenStreetMap.Testsite/umbraco/Data/packages
+/Bergmania.OpenStreetMap.Testsite/wwwroot/umbraco/
+/Bergmania.OpenStreetMap.Testsite/umbraco/PartialViewMacros/
+/Bergmania.OpenStreetMap.Testsite/umbraco/UmbracoBackOffice/
+/Bergmania.OpenStreetMap.Testsite/umbraco/UmbracoInstall/
+/Bergmania.OpenStreetMap.Testsite/umbraco/UmbracoWebsite/
+/Bergmania.OpenStreetMap.Testsite/umbraco/config/

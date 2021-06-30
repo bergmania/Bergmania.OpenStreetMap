@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.PropertyEditors;
+using Umbraco.Cms.Core.Services;
+
+namespace Bergmania.OpenStreetMap
+{
+    
+    /// <summary>
+    /// Represents a decimal property and parameter editor.
+    /// </summary>
+    [DataEditor(
+        Constants.EditorAlias,
+        EditorType.PropertyValue | EditorType.MacroParameter,
+        "Open Street Map",
+        Constants.EditorView,
+        ValueType = ValueTypes.Json)]
+    public class OpenStreetMapPropertyEditor : DataEditor
+    {
+        private readonly IIOHelper _ioHelper;
+
+        public OpenStreetMapPropertyEditor(
+            IDataValueEditorFactory dataValueEditorFactory, 
+            IIOHelper ioHelper,
+            EditorType type = EditorType.PropertyValue)
+            : base(dataValueEditorFactory, type)
+        {
+            _ioHelper = ioHelper;
+        }
+        
+        /// <inheritdoc />
+        protected override IDataValueEditor CreateValueEditor() => DataValueEditorFactory.Create<OpenStreetMapPropertyValueEditor>(Attribute);
+        
+        /// <inheritdoc />
+        protected override IConfigurationEditor CreateConfigurationEditor() => new OpenStreetMapConfigurationEditor(_ioHelper);
+    }
+}

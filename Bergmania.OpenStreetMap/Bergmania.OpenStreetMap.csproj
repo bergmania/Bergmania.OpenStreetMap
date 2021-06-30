@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <Version>1.0.0</Version>
+        <InformationalVersion>1.0.0</InformationalVersion>
+        <TargetFramework>net5.0</TargetFramework>
+        <Authors>Bjarke Berg</Authors>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <Product>Bergmania.OpenStreetMap</Product>
+        <PackageId>Bergmania.OpenStreetMap</PackageId>
+        <Title>Bergmania.OpenStreetMap</Title>
+        <Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
+        <Product>Bergmania.OpenStreetMap</Product>
+        <PackageTags>umbraco plugin package</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-beta004" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-beta004" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="App_Plugins\Bergmania.OpenStreetMap\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
+        <None Include="build\**\*.*">
+            <Pack>True</Pack>
+            <PackagePath>buildTransitive</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="App_Plugins\Bergmania.OpenStreetMap\lib" />
+    </ItemGroup>
+</Project>
