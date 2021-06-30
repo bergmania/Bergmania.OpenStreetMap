@@ -9,7 +9,6 @@ ProjectSection(SolutionItems) = preProject
 	Readme.md = Readme.md
 	.gitignore = .gitignore
 	LICENSE = LICENSE
-	azure-pipeline.yml = azure-pipeline.yml
 EndProjectSection
 EndProject
 Global
