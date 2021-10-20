@@ -60,8 +60,8 @@ namespace Bergmania.OpenStreetMap.Testsite
             app.UseUmbraco()
                 .WithMiddleware(u =>
                 {
-                    u.WithBackOffice();
-                    u.WithWebsite();
+                    u.UseBackOffice();
+                    u.UseWebsite();
                 })
                 .WithEndpoints(u =>
                 {

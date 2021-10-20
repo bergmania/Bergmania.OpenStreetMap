@@ -16,4 +16,4 @@ A test side is included with basic content saved in a SqlCe db.
 **Password**: 1234567890
 
 ## Versioning and push to nuget
-Currently no pipeline, just use `dotnet pack` and push manually
+Currently no pipeline, just use `dotnet pack -c Release` and push manually
