@@ -70,6 +70,5 @@ namespace Bergmania.OpenStreetMap
         
         [DataMember(Name = "longitude", IsRequired = true)]
         public decimal Longitude { get; set; }
-
     }
 }
