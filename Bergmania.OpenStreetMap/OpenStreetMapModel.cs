@@ -32,13 +32,13 @@ namespace Bergmania.OpenStreetMap
             }
 
             var southWestLat = BoundingBox.SouthWestCorner.Longitude.ToString(CultureInfo.InvariantCulture);
-            var southWesLng = BoundingBox.SouthWestCorner.Latitude.ToString(CultureInfo.InvariantCulture);
+            var southWestLng = BoundingBox.SouthWestCorner.Latitude.ToString(CultureInfo.InvariantCulture);
             
-            var northWestLng = BoundingBox.NorthEastCorner.Latitude.ToString(CultureInfo.InvariantCulture);
+            var northEastLng = BoundingBox.NorthEastCorner.Latitude.ToString(CultureInfo.InvariantCulture);
             var northEastLat = BoundingBox.NorthEastCorner.Longitude.ToString(CultureInfo.InvariantCulture);
 
             var url = 
-                $"https://www.openstreetmap.org/export/embed.html?bbox={southWestLat}%2C{southWesLng}%2C{northWestLng}%2C{northEastLat}&amp;layer=mapnik";
+                $"https://www.openstreetmap.org/export/embed.html?bbox={southWestLat}%2C{southWestLng}%2C{northEastLng}%2C{northEastLat}&amp;layer=mapnik";
 
             if (Marker is not null)
             {
