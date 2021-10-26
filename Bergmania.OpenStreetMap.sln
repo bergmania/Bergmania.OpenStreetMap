@@ -9,7 +9,10 @@ ProjectSection(SolutionItems) = preProject
 	Readme.md = Readme.md
 	.gitignore = .gitignore
 	LICENSE = LICENSE
+	Directory.Build.props = Directory.Build.props
 EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bergmania.OpenStreetMap.Core", "Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj", "{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,5 +28,9 @@ Global
 		{91FB0B4B-A899-4813-85D9-8A7C2877195B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91FB0B4B-A899-4813-85D9-8A7C2877195B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91FB0B4B-A899-4813-85D9-8A7C2877195B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
