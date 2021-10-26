@@ -38,7 +38,7 @@ namespace Bergmania.OpenStreetMap
             var northEastLng = BoundingBox.NorthEastCorner.Longitude.ToString(CultureInfo.InvariantCulture);
 
             var url = 
-                $"https://www.openstreetmap.org/export/embed.html?bbox={southWestLng}%2C{southWestLat}%2C{northEastLat}%2C{northEastLng}&amp;layer=mapnik";
+                $"https://www.openstreetmap.org/export/embed.html?bbox={southWestLng}%2C{southWestLat}%2C{northEastLng}%2C{northEastLat}&amp;layer=mapnik";
 
             if (Marker is not null)
             {
