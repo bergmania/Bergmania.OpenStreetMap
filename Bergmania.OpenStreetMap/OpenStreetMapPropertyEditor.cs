@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Umbraco.Cms.Core.IO;
+﻿using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.Services;
 
 namespace Bergmania.OpenStreetMap
 {
-    
+
     /// <summary>
     /// Represents a decimal property and parameter editor.
     /// </summary>
     [DataEditor(
         Constants.EditorAlias,
         EditorType.PropertyValue | EditorType.MacroParameter,
-        "Open Street Map",
+        Constants.EditorName,
         Constants.EditorView,
+        Icon = Constants.EditorIcon,
         ValueType = ValueTypes.Json)]
     public class OpenStreetMapPropertyEditor : DataEditor
     {
