@@ -1,7 +1,6 @@
 ﻿using Umbraco.Cms.Core.DependencyInjection;
 
-
-namespace Bergmania.OpenStreetMap
+namespace Bergmania.OpenStreetMap.Core
 {
     public static class UmbracoBuilderExtensions
     {

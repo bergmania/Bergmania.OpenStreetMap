@@ -1,7 +1,7 @@
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 
-namespace Bergmania.OpenStreetMap
+namespace Bergmania.OpenStreetMap.Core
 {
     public class OpenStreetMapConfigurationEditor : ConfigurationEditor<OpenStreetMapConfiguration>
     {

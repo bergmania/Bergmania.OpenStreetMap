@@ -1,6 +1,6 @@
 using Umbraco.Cms.Core.WebAssets;
 
-namespace Bergmania.OpenStreetMap
+namespace Bergmania.OpenStreetMap.Core
 {
     internal class LeafletJsFile : JavaScriptFile
     {

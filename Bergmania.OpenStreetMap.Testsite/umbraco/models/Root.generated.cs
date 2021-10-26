@@ -52,13 +52,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0-beta004+c41d05f6a67e1d217d565d055a85231792520f88")]
 		[ImplementPropertyType("map1")]
-		public virtual global::Bergmania.OpenStreetMap.OpenStreetMapModel Map1 => this.Value<global::Bergmania.OpenStreetMap.OpenStreetMapModel>(_publishedValueFallback, "map1");
+		public virtual global::Bergmania.OpenStreetMap.Core.OpenStreetMapModel Map1 => this.Value<global::Bergmania.OpenStreetMap.Core.OpenStreetMapModel>(_publishedValueFallback, "map1");
 
 		///<summary>
 		/// Map 2
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0-beta004+c41d05f6a67e1d217d565d055a85231792520f88")]
 		[ImplementPropertyType("map2")]
-		public virtual global::Bergmania.OpenStreetMap.OpenStreetMapModel Map2 => this.Value<global::Bergmania.OpenStreetMap.OpenStreetMapModel>(_publishedValueFallback, "map2");
+		public virtual global::Bergmania.OpenStreetMap.Core.OpenStreetMapModel Map2 => this.Value<global::Bergmania.OpenStreetMap.Core.OpenStreetMapModel>(_publishedValueFallback, "map2");
 	}
 }

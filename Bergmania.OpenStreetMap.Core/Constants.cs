@@ -1,4 +1,4 @@
-﻿namespace Bergmania.OpenStreetMap
+﻿namespace Bergmania.OpenStreetMap.Core
 {
     public static class Constants
     {

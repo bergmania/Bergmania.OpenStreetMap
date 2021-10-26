@@ -1,7 +1,7 @@
 ﻿using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Bergmania.OpenStreetMap
+namespace Bergmania.OpenStreetMap.Core
 {
     public class OpenStreetMapComposer : IComposer
     {

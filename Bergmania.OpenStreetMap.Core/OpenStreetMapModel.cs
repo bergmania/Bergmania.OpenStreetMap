@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 
-namespace Bergmania.OpenStreetMap
+namespace Bergmania.OpenStreetMap.Core
 {
     [DataContract]
     public class OpenStreetMapModel : IHtmlContent
