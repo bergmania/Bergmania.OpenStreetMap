@@ -1,4 +1,4 @@
-# Bergmania.OpenStreetMap
+# Bergmania.OpenStreetMap [![NuGet](https://img.shields.io/nuget/v/Bergmania.OpenStreetMap.svg?style=modern&label=nuget)](https://www.nuget.org/packages/Bergmania.OpenStreetMap)
 Basic OpenStreetMaps property editor for Umbraco 9 including property value converter.
 
 ## Features
