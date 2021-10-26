@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text.Encodings.Web;
@@ -30,12 +31,21 @@ namespace Bergmania.OpenStreetMap
                 throw new ArgumentNullException(nameof(encoder));
             }
 
+            var southWestLat = BoundingBox.SouthWestCorner.Longitude.ToString(CultureInfo.InvariantCulture);
+            var southWesLng = BoundingBox.SouthWestCorner.Latitude.ToString(CultureInfo.InvariantCulture);
+            
+            var northWestLng = BoundingBox.NorthEastCorner.Latitude.ToString(CultureInfo.InvariantCulture);
+            var northEastLat = BoundingBox.NorthEastCorner.Longitude.ToString(CultureInfo.InvariantCulture);
+
             var url = 
-                $"https://www.openstreetmap.org/export/embed.html?bbox={BoundingBox.SouthWestCorner.Longitude}%2C{BoundingBox.SouthWestCorner.Latitude}%2C{BoundingBox.NorthEastCorner.Longitude}%2C{BoundingBox.NorthEastCorner.Latitude}&amp;layer=mapnik";
+                $"https://www.openstreetmap.org/export/embed.html?bbox={southWestLat}%2C{southWesLng}%2C{northWestLng}%2C{northEastLat}&amp;layer=mapnik";
 
             if (Marker is not null)
             {
-                url += $"&amp;marker={Marker.Latitude}%2C{Marker.Longitude}";
+                var lat = Marker.Latitude.ToString(CultureInfo.InvariantCulture);
+                var lng = Marker.Longitude.ToString(CultureInfo.InvariantCulture);
+
+                url += $"&amp;marker={lat}%2C{lng}";
             }
 
             writer.Write($"<iframe width=\"100%\" height=\"400\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" src=\"{url}\" style=\"border: 1px solid black\"></iframe>");
