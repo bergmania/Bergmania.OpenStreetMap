@@ -22,14 +22,12 @@ namespace Bergmania.OpenStreetMap
         
         public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview)
         {
-            if (inter != null)
-            {
-                var model = _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
+            if (inter == null || string.IsNullOrWhiteSpace(inter.ToString()))
+                return null;
 
-                return model;
-            }
+            var model = _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
 
-            return null;
+            return model;
         }
     }
 }
