@@ -18,7 +18,8 @@ namespace Bergmania.OpenStreetMap.Core
         
         [DataMember(Name = "boundingBox", IsRequired = true)]
         public BoundingBoxModel BoundingBox { get; set; }
-
+        
+        public OpenStreetMapConfiguration Configuration { get; set; }
         public void WriteTo(TextWriter writer, HtmlEncoder encoder)
         {
             if (writer == null)

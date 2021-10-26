@@ -5,8 +5,7 @@ namespace Bergmania.OpenStreetMap.Core
 {
     public class OpenStreetMapConfigurationEditor : ConfigurationEditor<OpenStreetMapConfiguration>
     {
-        public OpenStreetMapConfigurationEditor(
-            IIOHelper ioHelper) : base(ioHelper)
+        public OpenStreetMapConfigurationEditor(IIOHelper ioHelper) : base(ioHelper)
         {
         }
     }
