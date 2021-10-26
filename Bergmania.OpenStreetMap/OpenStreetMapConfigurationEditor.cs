@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.PropertyEditors.Validators;
-using Umbraco.Cms.Core.Services;
 
 namespace Bergmania.OpenStreetMap
 {
