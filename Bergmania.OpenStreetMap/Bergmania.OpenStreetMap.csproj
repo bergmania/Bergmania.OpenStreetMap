@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>2.0.1</AssemblyVersion>
-        <Version>2.0.1</Version>
-        <InformationalVersion>2.0.1</InformationalVersion>
+        <AssemblyVersion>2.0.2</AssemblyVersion>
+        <Version>2.0.2</Version>
+        <InformationalVersion>2.0.2</InformationalVersion>
         <TargetFramework>net5.0</TargetFramework>
         <Authors>Bjarke Berg</Authors>
         <ContentTargetFolders>.</ContentTargetFolders>
