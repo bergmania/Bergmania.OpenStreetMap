@@ -156,12 +156,10 @@
                     // set the view of the map
                     vm.map.setView([coords[1], coords[0]]);
 
-                    vm.map.setZoom(8);
-
                     // set zoom based on address type
-                    if (category === "place") {
+                    /*if (category === "place") {
                         vm.map.setZoom(14);
-                    }
+                    }*/
 
                     // removing the previous marker
                     vm.map.eachLayer(function (layer) {
@@ -180,9 +178,9 @@
                 // get index and data from li element after
                 // hovering over li with the mouse or using
                 // arrow keys ↓ | ↑
-                onSelectedItem: ({ index, element, object }) => {
-                    console.log('onSelectedItem:', index, element, object);
-                },
+                //onSelectedItem: ({ index, element, object }) => {
+                //    console.log('onSelectedItem:', index, element, object);
+                //},
 
                 // the method presents no results element
                 noResults: ({ currentValue, template }) => template(`<li>No results found: "${currentValue}"</li>`),
