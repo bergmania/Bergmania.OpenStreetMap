@@ -10,6 +10,10 @@ namespace Bergmania.OpenStreetMap.Core
         [ConfigurationField("defaultPosition", "Default Position", Constants.EditorView)]
         public OpenStreetMapModel DefaultPosition { get; set; }
 
+        [DataMember(Name = "showSearch")]
+        [ConfigurationField("showSearch", "Show Search", Constants.BooleanView, Description = "Show search field above map.")]
+        public bool ShowSearch { get; set; } = false;
+
         [DataMember(Name ="tileLayer")]
         [ConfigurationField("tileLayer", "Tile Layer", Constants.TextStringView)]
         public string TileLayer { get; set; } = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";

@@ -6,6 +6,7 @@
         vm.inputId = "osm_search_" + String.CreateGuid();
 
         vm.currentMarker = null;
+        vm.showSearch = $scope.model.config.showSearch ? Object.toBoolean($scope.model.config.showSearch) : false;
 
         function onInit() {
 
@@ -28,10 +29,12 @@
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
             }
 
-            // Ensure DOM is ready
-            $timeout(function () {
-                initAutocompleteSearch();
-            });
+            if (vm.showSearch) {
+                // Ensure DOM is ready
+                $timeout(function () {
+                    initAutocompleteSearch();
+                });
+            }
         }
 
         function clearMarker() {
@@ -134,15 +137,15 @@
 
                 // we add an action to enter or click
                 onSubmit: ({ object }) => {
-                    console.log("object", object);
-                    const { display_name } = object.properties;
-                    const cords = object.geometry.coordinates;
+
+                    const { display_name, category } = object.properties;
+                    const coords = object.geometry.coordinates;
 
                     // custom id for marker
                     const customId = Math.random();
 
                     // create marker and add to map
-                    const marker = L.marker([cords[1], cords[0]], {
+                    const marker = L.marker([coords[1], coords[0]], {
                         title: display_name,
                         id: customId,
                         draggable: true
@@ -150,15 +153,15 @@
                     .addTo(vm.map)
                     .bindPopup(display_name);
 
-                    // sets the view of the map
-                    vm.map.setView([cords[1], cords[0]]);
+                    // set the view of the map
+                    vm.map.setView([coords[1], coords[0]]);
 
-                    // fit bounds
-                    vm.map.fitBounds([
-                        
-                    ]);
+                    vm.map.setZoom(8);
 
-                    vm.currentMarker = marker;
+                    // set zoom based on address type
+                    if (category === "place") {
+                        vm.map.setZoom(14);
+                    }
 
                     // removing the previous marker
                     vm.map.eachLayer(function (layer) {
@@ -168,6 +171,8 @@
                             }
                         }
                     });
+
+                    vm.currentMarker = marker;
 
                     updateModel();
                 },

@@ -1,6 +1,6 @@
 <div ng-controller="Bergmania.OpenStreetMap.Controller as vm">
 
-    <div class="osm-auto-search mb3">
+    <div ng-if="vm.showSearch" class="osm-auto-search mb3">
         <umb-search-filter
             input-id="{{vm.inputId}}"
             model="vm.term"
