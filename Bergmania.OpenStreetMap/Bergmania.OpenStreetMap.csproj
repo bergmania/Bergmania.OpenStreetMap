@@ -22,4 +22,7 @@
     <ItemGroup>
         <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj" />
+    </ItemGroup>
 </Project>

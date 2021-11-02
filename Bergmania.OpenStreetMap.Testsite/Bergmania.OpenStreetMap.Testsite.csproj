@@ -41,11 +41,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Bergmania.OpenStreetMap\Bergmania.OpenStreetMap.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210626.json" />
-      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210627.json" />
-      <_ContentIncludedByDefault Remove="umbraco\Logs\UmbracoTraceLog.DESKTOP-EU212M2.20210628.json" />
-    </ItemGroup>
 
     <!-- Set this to true if ModelsBuilder mode is not InMemoryAuto-->
     <PropertyGroup>
