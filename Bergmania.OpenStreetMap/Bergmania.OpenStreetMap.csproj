@@ -2,6 +2,7 @@
     <PropertyGroup>
         <ContentTargetFolders>.</ContentTargetFolders>
         <Title>Bergmania.OpenStreetMap</Title>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     
     <ItemGroup>
@@ -15,6 +16,9 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
     <ItemGroup>
         <Folder Include="App_Plugins\Bergmania.OpenStreetMap\lib" />
     </ItemGroup>

@@ -4,18 +4,11 @@
 		<Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
 		<Product>Bergmania.OpenStreetMap</Product>
 		<PackageTags>umbraco plugin package openstreetmap leaflet</PackageTags>
-		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bergmania/Bergmania.OpenStreetMap</RepositoryUrl>
-
 		<AssemblyVersion>3.1.0</AssemblyVersion>
 		<Version>3.1.0</Version>
 		<InformationalVersion>3.1.0</InformationalVersion>
 		<Authors>bergmania,bfyrstenborg</Authors>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
-
 </Project>
