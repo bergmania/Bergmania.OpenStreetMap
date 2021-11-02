@@ -3,11 +3,14 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Title>Bergmania.OpenStreetMap.Core</Title>
+        <PackageIcon>icon-128.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
     </ItemGroup>
-    
+    <ItemGroup>
+        <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>
