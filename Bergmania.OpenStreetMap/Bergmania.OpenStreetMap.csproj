@@ -2,6 +2,7 @@
     <PropertyGroup>
         <ContentTargetFolders>.</ContentTargetFolders>
         <Title>Bergmania.OpenStreetMap</Title>
+        <PackageIcon>icon-128.png</PackageIcon>
     </PropertyGroup>
     
     <ItemGroup>
@@ -14,12 +15,11 @@
             <PackagePath>buildTransitive</PackagePath>
         </None>
     </ItemGroup>
-
+    
     <ItemGroup>
         <Folder Include="App_Plugins\Bergmania.OpenStreetMap\lib" />
     </ItemGroup>
-
     <ItemGroup>
-      <ProjectReference Include="..\Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj" />
+        <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>
