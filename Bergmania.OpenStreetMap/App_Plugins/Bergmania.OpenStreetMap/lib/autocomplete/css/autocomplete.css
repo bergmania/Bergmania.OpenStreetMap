@@ -145,7 +145,7 @@
     display: block;
     margin-top: -1px;
     position: absolute;
-    width: 100%;
+    width: calc(100% - 2px);
     z-index: 99999
 }
 
