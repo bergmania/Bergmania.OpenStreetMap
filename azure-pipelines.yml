@@ -5,14 +5,40 @@
 
 trigger:
 - main
+- refs/tags/release/*
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
   buildConfiguration: 'Release'
+  
 
 steps:
+- task: PowerShell@2
+  displayName: 'Set version number'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $tag = "$(Build.SourceBranch)".Replace("refs/tags/release/","")
+      $regexString = "^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$"
+      $regex = new-object System.Text.RegularExpressions.Regex ($regexString,[System.Text.RegularExpressions.RegexOptions]::MultiLine)
+      Write-Host "Pushed tag is $tag"
+      if ($tag -match $regex)
+      {
+        Write-Host "$tag conforms to semantic version; Setting Azure DevOps variable PACKAGE_VERSION..."
+        # Write the tag (e.g. 1.0.0) to an environment variable, so we can use it in the following step
+        Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
+        Write-Host "PACKAGE_VERSION set to $env:PACKAGE_VERSION"
+      }
+      else
+      {
+        # Error out if the tag doesn't conform to semantic versioning standard
+        Write-Error "$tag does not conform to semantic versioning"
+        
+        Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
+        Write-Host "PACKAGE_VERSION set to 0.0.0-nightly$(Build.BuildNumber)"
+      }
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
@@ -22,9 +48,9 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
     nobuild: true
-    versioningScheme: 'off'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'PACKAGE_VERSION'
 
 - task: PublishBuildArtifacts@1
   inputs:
