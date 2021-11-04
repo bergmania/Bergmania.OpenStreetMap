@@ -27,18 +27,16 @@ steps:
       if ($tag -match $regex)
       {
         Write-Host "$tag conforms to semantic version; Setting Azure DevOps variable PACKAGE_VERSION..."
-        # Write the tag (e.g. 1.0.0) to an environment variable, so we can use it in the following step
-        Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
-        Write-Host "PACKAGE_VERSION set to $env:PACKAGE_VERSION"
       }
       else
       {
         # Error out if the tag doesn't conform to semantic versioning standard
         Write-Error "$tag does not conform to semantic versioning"
-        
-        Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
-        Write-Host "PACKAGE_VERSION set to 0.0.0-nightly$(Build.BuildNumber)"
+      
+        $tag = "0.0.0-nightly$(Build.BuildNumber)"
       }
+      Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
+      Write-Host "PACKAGE_VERSION set to 0.0.0-nightly$(Build.BuildNumber)"
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
