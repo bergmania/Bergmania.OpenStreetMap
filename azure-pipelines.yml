@@ -31,7 +31,7 @@ steps:
       else
       {
         # Error out if the tag doesn't conform to semantic versioning standard
-        Write-Error "$tag does not conform to semantic versioning"
+        Write-Host "$tag does not conform to semantic versioning"
       
         $tag = "0.0.0-nightly$(Build.BuildNumber)"
       }
