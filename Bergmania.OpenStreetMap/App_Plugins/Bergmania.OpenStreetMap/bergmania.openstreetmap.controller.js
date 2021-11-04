@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco")
-    .controller("Bergmania.OpenStreetMap.Controller", ["$scope", "$element", "$timeout",  function ($scope, $element, $timeout) {
+    .controller("Bergmania.OpenStreetMap.Controller", ["$scope", "$element", "$timeout", "userService", function ($scope, $element, $timeout, userService) {
 
         const vm = this;
 
@@ -31,8 +31,10 @@
 
             if (vm.showSearch) {
                 // Ensure DOM is ready
-                $timeout(function () {
-                    initAutocompleteSearch();
+                userService.getCurrentUser().then(function (currentUser) {
+                    $timeout(function () {
+                        initAutocompleteSearch(currentUser.locale);
+                    });
                 });
             }
         }
@@ -94,7 +96,7 @@
             }
         }
 
-        function initAutocompleteSearch() {
+        function initAutocompleteSearch(language) {
 
             new Autocomplete(vm.inputId, {
                 selectFirst: true,
@@ -104,7 +106,7 @@
                 onSearch: ({ currentValue }) => {
 
                     const limit = 5;
-                    const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=${limit}&q=${encodeURI(currentValue)}`;
+                    const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=${limit}&q=${encodeURI(currentValue)}&accept-language=${language}`;
 
                     return new Promise((resolve) => {
                         fetch(api)
