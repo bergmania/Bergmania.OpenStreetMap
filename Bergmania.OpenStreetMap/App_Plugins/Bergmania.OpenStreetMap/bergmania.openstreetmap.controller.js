@@ -34,6 +34,10 @@
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
             }
 
+            if (vm.currentMarker) {
+                vm.currentMarker.on('dragend', updateModel);
+            }
+
             if (vm.showSearch) {
                 // Ensure DOM is ready
                 $timeout(function () {
@@ -56,6 +60,10 @@
 
             vm.map.setView(e.latlng);
             vm.currentMarker = L.marker(e.latlng, { draggable: true }).addTo(vm.map);
+
+            if (vm.currentMarker) {
+                vm.currentMarker.on('dragend', updateModel);
+            }
 
             updateModel(e);
         }
@@ -176,6 +184,10 @@
                     });
 
                     vm.currentMarker = marker;
+
+                    if (vm.currentMarker) {
+                        vm.currentMarker.on('dragend', updateModel);
+                    }
 
                     updateModel();
                 },
