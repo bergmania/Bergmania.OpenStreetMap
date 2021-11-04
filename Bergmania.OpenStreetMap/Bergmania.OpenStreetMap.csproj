@@ -17,6 +17,11 @@
     </ItemGroup>
     
     <ItemGroup>
+      <None Remove="App_Plugins\Bergmania.OpenStreetMap\lang\da-DK.xml" />
+      <None Remove="App_Plugins\Bergmania.OpenStreetMap\lang\en-US.xml" />
+    </ItemGroup>
+    
+    <ItemGroup>
         <Folder Include="App_Plugins\Bergmania.OpenStreetMap\lib" />
     </ItemGroup>
     <ItemGroup>

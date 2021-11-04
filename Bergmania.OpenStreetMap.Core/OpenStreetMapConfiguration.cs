@@ -14,6 +14,14 @@ namespace Bergmania.OpenStreetMap.Core
         [ConfigurationField("showSearch", "Show Search", Constants.BooleanView, Description = "Show search field above map.")]
         public bool ShowSearch { get; set; } = false;
 
+        [DataMember(Name = "showCoordinates")]
+        [ConfigurationField("showCoordinates", "Show Coordinates", Constants.BooleanView, Description = "Show marker coordinates below map.")]
+        public bool ShowCoordinates { get; set; } = false;
+
+        [DataMember(Name = "allowClear")]
+        [ConfigurationField("allowClear", "Allow Clear", Constants.BooleanView, Description = "Allow clearing previous marker.")]
+        public bool AllowClear { get; set; } = false;
+
         [DataMember(Name ="tileLayer")]
         [ConfigurationField("tileLayer", "Tile Layer", Constants.TextStringView)]
         public string TileLayer { get; set; } = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
