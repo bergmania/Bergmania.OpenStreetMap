@@ -20,7 +20,7 @@ namespace Bergmania.OpenStreetMap.Core
 
         [DataMember(Name = "allowClear")]
         [ConfigurationField("allowClear", "Allow Clear", Constants.BooleanView, Description = "Allow clearing previous marker.")]
-        public bool AllowClear { get; set; } = false;
+        public bool AllowClear { get; set; } = true;
 
         [DataMember(Name ="tileLayer")]
         [ConfigurationField("tileLayer", "Tile Layer", Constants.TextStringView)]
