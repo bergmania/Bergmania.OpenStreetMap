@@ -155,14 +155,9 @@
                     .addTo(vm.map)
                     .bindPopup(display_name);
 
-                    // set the view of the map
-                    vm.map.setView([coords[1], coords[0]]);
-
-                    // set zoom based on address type
-                    /*if (category === "place") {
-                        vm.map.setZoom(14);
-                    }*/
-
+                    const bbox = object.bbox;
+                    vm.map.fitBounds(L.latLngBounds(L.latLng(bbox[1], bbox[0]), L.latLng(bbox[3], bbox[2])));
+                    
                     // removing the previous marker
                     vm.map.eachLayer(function (layer) {
                         if (layer.options && layer.options.pane === "markerPane") {
