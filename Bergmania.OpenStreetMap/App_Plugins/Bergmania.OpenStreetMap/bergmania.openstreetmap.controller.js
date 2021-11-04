@@ -28,9 +28,7 @@
             vm.map.on('moveend', updateModel);
             vm.map.on('zoomend', updateModel);
 
-            if (vm.allowClear) {
-                vm.map.on('contextmenu', clearMarker);
-            }
+            vm.map.on('contextmenu', vm.allowClear ? clearMarker : Utilities.noop);
 
             if (initValue.marker) {
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
