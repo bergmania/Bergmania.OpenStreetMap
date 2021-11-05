@@ -6,6 +6,7 @@
 trigger:
 - main
 - refs/tags/release/*
+- refs/pull/*
 
 pool:
   vmImage: ubuntu-latest
