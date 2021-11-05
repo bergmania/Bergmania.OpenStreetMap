@@ -14,7 +14,6 @@ pool:
 variables:
   buildConfiguration: 'Release'
   
-
 steps:
 - task: PowerShell@2
   displayName: 'Set version number'
