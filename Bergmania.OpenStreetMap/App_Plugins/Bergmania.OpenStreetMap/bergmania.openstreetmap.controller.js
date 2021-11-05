@@ -48,17 +48,21 @@
             }
         }
 
-        function clearMarker() {
+        function clearMarker(e, skipUpdate) {
             if (vm.currentMarker){
                 vm.currentMarker.remove(vm.map);
                 vm.currentMarker = null;
             }
 
-            updateModel();
+            if(!skipUpdate){
+                updateModel();
+            }
+
+
         }
 
         function onMapClick(e) {
-            clearMarker();
+            clearMarker(e, true);
 
             vm.map.setView(e.latlng);
             vm.currentMarker = L.marker(e.latlng, { draggable: true }).addTo(vm.map);
@@ -67,46 +71,49 @@
                 vm.currentMarker.on('dragend', updateModel);
             }
 
-            updateModel(e);
+            //updateModel();
         }
 
         function updateModel() {
+            $timeout(function() {
 
-            $scope.model.value = {};
+                $scope.model.value.marker = {};
+                $scope.model.value = {};
 
-            $scope.model.value.zoom = vm.map.getZoom();
+                $scope.model.value.zoom = vm.map.getZoom();
 
-            if (!$scope.model.value.boundingBox) {
-                $scope.model.value.boundingBox = {};
-            }
-            if (!$scope.model.value.boundingBox.southWestCorner) {
-                $scope.model.value.boundingBox.southWestCorner = {};
-            }
-            if (!$scope.model.value.boundingBox.northEastCorner) {
-                $scope.model.value.boundingBox.northEastCorner = {};
-            }
-
-            const northEastCorner = vm.map.getBounds().getNorthEast();
-            const southWestCorner = vm.map.getBounds().getSouthWest();
-
-            $scope.model.value.boundingBox.northEastCorner.latitude = northEastCorner.lat;
-            $scope.model.value.boundingBox.northEastCorner.longitude = northEastCorner.lng;
-            $scope.model.value.boundingBox.southWestCorner.latitude = southWestCorner.lat;
-            $scope.model.value.boundingBox.southWestCorner.longitude = southWestCorner.lng;
-
-            if (vm.currentMarker) {
-                const marker = vm.currentMarker.getLatLng();
-
-                if (!$scope.model.value.marker) {
-                    $scope.model.value.marker = {};
+                if (!$scope.model.value.boundingBox) {
+                    $scope.model.value.boundingBox = {};
+                }
+                if (!$scope.model.value.boundingBox.southWestCorner) {
+                    $scope.model.value.boundingBox.southWestCorner = {};
+                }
+                if (!$scope.model.value.boundingBox.northEastCorner) {
+                    $scope.model.value.boundingBox.northEastCorner = {};
                 }
 
-                $scope.model.value.marker.latitude = marker.lat;
-                $scope.model.value.marker.longitude = marker.lng;
+                const northEastCorner = vm.map.getBounds().getNorthEast();
+                const southWestCorner = vm.map.getBounds().getSouthWest();
 
-            } else {
-                $scope.model.value.marker = null;
-            }
+                $scope.model.value.boundingBox.northEastCorner.latitude = northEastCorner.lat;
+                $scope.model.value.boundingBox.northEastCorner.longitude = northEastCorner.lng;
+                $scope.model.value.boundingBox.southWestCorner.latitude = southWestCorner.lat;
+                $scope.model.value.boundingBox.southWestCorner.longitude = southWestCorner.lng;
+
+                if (vm.currentMarker) {
+                    const marker = vm.currentMarker.getLatLng();
+
+                    if (!$scope.model.value.marker) {
+                        $scope.model.value.marker = {};
+                    }
+
+                    $scope.model.value.marker.latitude = marker.lat;
+                    $scope.model.value.marker.longitude = marker.lng;
+
+                } else {
+                    $scope.model.value.marker = null;
+                }
+            }, 0);
         }
 
         function initAutocompleteSearch(language) {
@@ -165,12 +172,12 @@
                         id: customId,
                         draggable: true
                     })
-                    .addTo(vm.map)
-                    .bindPopup(display_name);
+                        .addTo(vm.map)
+                        .bindPopup(display_name);
 
                     const bbox = object.bbox;
                     vm.map.fitBounds(L.latLngBounds(L.latLng(bbox[1], bbox[0]), L.latLng(bbox[3], bbox[2])));
-                    
+
                     // removing the previous marker
                     vm.map.eachLayer(function (layer) {
                         if (layer.options && layer.options.pane === "markerPane") {
