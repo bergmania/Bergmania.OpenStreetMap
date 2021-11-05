@@ -10,6 +10,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	LICENSE = LICENSE
 	Directory.Build.props = Directory.Build.props
+	azure-pipelines.yml = azure-pipelines.yml
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bergmania.OpenStreetMap.Core", "Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj", "{0D3C50F6-DFE5-4A43-AB54-D2BE5140309C}"
