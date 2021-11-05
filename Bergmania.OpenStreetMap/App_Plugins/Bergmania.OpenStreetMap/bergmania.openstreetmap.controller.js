@@ -7,6 +7,10 @@
 
         vm.currentMarker = null;
         vm.showSearch = $scope.model.config.showSearch ? Object.toBoolean($scope.model.config.showSearch) : false;
+        vm.showCoordinates = $scope.model.config.showCoordinates ? Object.toBoolean($scope.model.config.showCoordinates) : false;
+        vm.allowClear = $scope.model.config.allowClear ? Object.toBoolean($scope.model.config.allowClear) : false;
+
+        vm.clearMarker = clearMarker;
 
         function onInit() {
 
@@ -23,10 +27,15 @@
             vm.map.on('click', onMapClick);
             vm.map.on('moveend', updateModel);
             vm.map.on('zoomend', updateModel);
-            vm.map.on('contextmenu', clearMarker);
+
+            vm.map.on('contextmenu', vm.allowClear ? clearMarker : Utilities.noop);
 
             if (initValue.marker) {
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
+            }
+
+            if (vm.currentMarker) {
+                vm.currentMarker.on('dragend', updateModel);
             }
 
             if (vm.showSearch) {
@@ -53,6 +62,10 @@
 
             vm.map.setView(e.latlng);
             vm.currentMarker = L.marker(e.latlng, { draggable: true }).addTo(vm.map);
+
+            if (vm.currentMarker) {
+                vm.currentMarker.on('dragend', updateModel);
+            }
 
             updateModel(e);
         }
@@ -168,6 +181,10 @@
                     });
 
                     vm.currentMarker = marker;
+
+                    if (vm.currentMarker) {
+                        vm.currentMarker.on('dragend', updateModel);
+                    }
 
                     updateModel();
                 },
