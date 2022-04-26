@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <ContentTargetFolders>.</ContentTargetFolders>
+        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
         <Title>Bergmania.OpenStreetMap</Title>
         <PackageIcon>icon-128.png</PackageIcon>
+        <ContentTargetFolders>.</ContentTargetFolders>
     </PropertyGroup>
     
     <ItemGroup>

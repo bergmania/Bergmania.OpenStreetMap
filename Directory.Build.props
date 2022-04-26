@@ -1,14 +1,13 @@
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
 		<Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
 		<Product>Bergmania.OpenStreetMap</Product>
 		<PackageTags>umbraco plugin package openstreetmap leaflet</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bergmania/Bergmania.OpenStreetMap</RepositoryUrl>
-		<AssemblyVersion>3.3.1</AssemblyVersion>
-		<Version>3.3.1</Version>
-		<InformationalVersion>3.3.1</InformationalVersion>
+		<AssemblyVersion>3.4.0</AssemblyVersion>
+		<Version>3.4.0</Version>
+		<InformationalVersion>3.4.0</InformationalVersion>
 		<Authors>bergmania,bfyrstenborg</Authors>
 	</PropertyGroup>
 	

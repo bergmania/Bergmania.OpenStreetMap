@@ -9,7 +9,7 @@ Basic OpenStreetMaps property editor for Umbraco 9 including property value conv
 - Bounding box is saved on the proprety to use the same on your website
 
 ## Test site
-A test side is included with basic content saved in a SqlCe db. 
+A test side is included with basic content saved in a SqlCe db (for v9) and SqLite (for v10). 
 
 ### Authentication
 **Username**: me@mail.com
