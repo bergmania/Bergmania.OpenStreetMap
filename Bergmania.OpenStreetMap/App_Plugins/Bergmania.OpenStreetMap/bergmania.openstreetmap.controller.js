@@ -8,7 +8,7 @@
         vm.currentMarker = null;
         vm.showSearch = $scope.model.config.showSearch ? Object.toBoolean($scope.model.config.showSearch) : false;
         vm.showCoordinates = $scope.model.config.showCoordinates ? Object.toBoolean($scope.model.config.showCoordinates) : false;
-        vm.allowClear = $scope.model.config.allowClear ? Object.toBoolean($scope.model.config.allowClear) : false;
+        vm.allowClear = $scope.model.config.allowClear ? Object.toBoolean($scope.model.config.allowClear) : true;
 
         vm.clearMarker = clearMarker;
 
@@ -28,7 +28,12 @@
             vm.map.on('moveend', updateModel);
             vm.map.on('zoomend', updateModel);
 
-            vm.map.on('contextmenu', vm.allowClear ? clearMarker : Utilities.noop);
+            vm.map.on('contextmenu', function() {
+                if(vm.allowClear !== true && Object.toBoolean($scope.model.config.allowClear) !== true){
+                    return;
+                }
+                clearMarker();
+            });
 
             if (initValue.marker) {
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
@@ -77,8 +82,8 @@
         function updateModel() {
             $timeout(function() {
 
-                $scope.model.value.marker = {};
                 $scope.model.value = {};
+                $scope.model.value.marker = {};
 
                 $scope.model.value.zoom = vm.map.getZoom();
 
