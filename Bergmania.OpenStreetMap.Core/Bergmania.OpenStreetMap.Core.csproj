@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0-preview20220425.90636" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0-preview20220425.90636" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0-preview20220502.91295" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0-preview20220502.91295" />
     </ItemGroup>
     <ItemGroup>
         <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
