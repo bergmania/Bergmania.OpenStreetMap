@@ -5,9 +5,9 @@
 		<PackageTags>umbraco plugin package openstreetmap leaflet</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bergmania/Bergmania.OpenStreetMap</RepositoryUrl>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<Version>4.0.0-rc</Version>
-		<InformationalVersion>4.0.0-rc</InformationalVersion>
+		<AssemblyVersion>5.0.0</AssemblyVersion>
+		<Version>5.0.0-rc</Version>
+		<InformationalVersion>5.0.0-rc</InformationalVersion>
 		<Authors>bergmania,bfyrstenborg</Authors>
 	</PropertyGroup>
 	
