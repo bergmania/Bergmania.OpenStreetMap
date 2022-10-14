@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
 		<Product>Bergmania.OpenStreetMap</Product>
-		<PackageTags>umbraco plugin package openstreetmap leaflet</PackageTags>
+		<PackageTags>umbraco plugin package openstreetmap leaflet umbraco-marketplace</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bergmania/Bergmania.OpenStreetMap</RepositoryUrl>
 		<AssemblyVersion>5.0.0</AssemblyVersion>
