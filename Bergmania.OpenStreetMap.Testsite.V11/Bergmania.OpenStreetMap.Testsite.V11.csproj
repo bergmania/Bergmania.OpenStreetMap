@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>Bergmania.OpenStreetMap.Testsite</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms" Version="11.0.0--rc1.preview.39.gf7a26f5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Bergmania.OpenStreetMap\Bergmania.OpenStreetMap.csproj" />
+    </ItemGroup>
+    
+    <!-- Set this to true if ModelsBuilder mode is not InMemoryAuto-->
+    <PropertyGroup>
+        <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    </PropertyGroup>
+</Project>
