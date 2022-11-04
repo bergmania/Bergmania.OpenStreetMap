@@ -13,7 +13,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  
+  dotnetVersion: 7.x
+  dotnetIncludePreviewVersions: true
 steps:
 - task: PowerShell@2
   displayName: 'Set version number'
@@ -38,6 +39,14 @@ steps:
       }
       Write-Host "##vso[task.setvariable variable=PACKAGE_VERSION]$tag"
       Write-Host "PACKAGE_VERSION set to 0.0.0-nightly$(Build.BuildNumber)"
+      
+- task: UseDotNet@2
+  displayName: Use .NET $(dotnetVersion)
+  inputs:
+    version: $(dotnetVersion)
+    performMultiLevelLookup: true
+    includePreviewVersions: $(dotnetIncludePreviewVersions)
+      
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
