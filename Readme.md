@@ -16,8 +16,7 @@ A test side is included with basic content saved in a SqlCe db (for v9) and SqLi
 **Password**: 1234567890
 
 ## Versioning and push to nuget
-Currently no pipeline, just use `dotnet pack -c Release -o dist` and push manually
-
+Make a git-tag with this format `release/x.x.x`. The pipeline with pick it up and release to nuget and create github release.
 ## Contributions
 Thanks for the contributions
 - [Bjarke Berg](https://github.com/bergmania) (Initial creator)
