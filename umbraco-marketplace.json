@@ -1,0 +1,26 @@
+{
+  "AlternatePackageNames": [""],
+  "AuthorDetails": {
+    "Description": "Bjarke is Head of CMS at Umbraco HQ. This package is provided in a personal capacity.",
+    "Url": "https://berg.dev",
+    "ImageUrl": "https://umbraco.com/media/1rca05ze/bjarke-1.jpg"
+  },
+  "Category": "CMS Extensions",
+  "LicenseType": "Free",
+  "PackageType": "Package",
+  "PackagesByAuthor": [ "" ],
+  "RelatedPackages": [
+
+  ],
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/bergmania/Bergmania.OpenStreetMap/main/assets/icon-512.png",
+      "Caption": "Bergmania.OpenStreetMap - View in content section of Backoffice"
+    }
+  ],
+  "Tags": [
+    "map"
+  ],
+  "Umbraco8PackageId": null,
+  "VideoUrl": null
+}
