@@ -4,6 +4,7 @@
         <Title>Bergmania.OpenStreetMap</Title>
         <PackageIcon>icon-128.png</PackageIcon>
         <ContentTargetFolders>.</ContentTargetFolders>
+        <PackageTags>umbraco plugin package openstreetmap leaflet umbraco-marketplace</PackageTags>
     </PropertyGroup>
 
 
