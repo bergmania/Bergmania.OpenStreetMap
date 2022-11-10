@@ -22,6 +22,10 @@ namespace Bergmania.OpenStreetMap.Core
         [ConfigurationField("allowClear", "Allow Clear", Constants.BooleanView, Description = "Allow clearing previous marker.")]
         public bool AllowClear { get; set; } = true;
 
+        [DataMember(Name = "scrollWheelZoom")]
+        [ConfigurationField("scrollWheelZoom", "Scroll wheel zoom", Constants.BooleanView, Description = "Enable scroll wheel zoom in property editor?")]
+        public bool ScrollWheelZoom { get; set; } = true;
+
         [DataMember(Name ="tileLayer")]
         [ConfigurationField("tileLayer", "Tile Layer", Constants.TextStringView)]
         public string TileLayer { get; set; } = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";

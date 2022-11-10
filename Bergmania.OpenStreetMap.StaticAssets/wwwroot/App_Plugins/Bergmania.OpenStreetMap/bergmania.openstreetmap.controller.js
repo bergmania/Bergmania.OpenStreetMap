@@ -6,9 +6,10 @@
         vm.inputId = "osm_search_" + String.CreateGuid();
 
         vm.currentMarker = null;
-        vm.showSearch = $scope.model.config.showSearch ? Object.toBoolean($scope.model.config.showSearch) : false;
-        vm.showCoordinates = $scope.model.config.showCoordinates ? Object.toBoolean($scope.model.config.showCoordinates) : false;
-        vm.allowClear = $scope.model.config.allowClear ? Object.toBoolean($scope.model.config.allowClear) : true;
+        vm.showSearch = $scope.model.config.showSearch != null ? Object.toBoolean($scope.model.config.showSearch) : false;
+        vm.showCoordinates = $scope.model.config.showCoordinates != null ? Object.toBoolean($scope.model.config.showCoordinates) : false;
+        vm.allowClear = $scope.model.config.allowClear != null ? Object.toBoolean($scope.model.config.allowClear) : true;
+        vm.scrollWheelZoom = $scope.model.config.scrollWheelZoom != null ? Object.toBoolean($scope.model.config.scrollWheelZoom) : true;
 
         vm.clearMarker = clearMarker;
 
@@ -18,7 +19,7 @@
             const tileLayer = $scope.model.config.tileLayer || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
             const tileLayerOptions = { attribution: $scope.model.config.tileLayerAttribution };
 
-            vm.map = L.map($element.find("[data-openstreetmap]")[0])
+            vm.map = L.map($element.find("[data-openstreetmap]")[0], { scrollWheelZoom: vm.scrollWheelZoom })
                 .fitBounds(L.latLngBounds(L.latLng(initValue.boundingBox.southWestCorner.latitude, initValue.boundingBox.southWestCorner.longitude),
                     L.latLng(initValue.boundingBox.northEastCorner.latitude, initValue.boundingBox.northEastCorner.longitude)));
 
