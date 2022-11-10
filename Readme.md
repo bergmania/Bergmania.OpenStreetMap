@@ -21,3 +21,4 @@ Make a git-tag with this format `release/x.x.x`. The pipeline with pick it up an
 Thanks for the contributions
 - [Bjarke Berg](https://github.com/bergmania) (Initial creator)
 - [Bjarne Fyrstenborg](https://github.com/bjarnef)
+- [Arjan](https://github.com/creativesuspects)
