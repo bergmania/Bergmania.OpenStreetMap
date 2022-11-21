@@ -17,7 +17,7 @@
     ]
   },
   "Category": "Editor Tools",
-  "LicenseType": "Free",
+  "LicenseTypes": ["Free"],
   "PackageType": "Package",
   "PackagesByAuthor": [ "" ],
   "RelatedPackages": [
