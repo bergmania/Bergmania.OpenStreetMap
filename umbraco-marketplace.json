@@ -2,7 +2,7 @@
   "$schema": "https://dev.marketplace.umbraco.com/umbraco-marketplace-schema.json",
   "AlternatePackageNames": [""],
   "AuthorDetails": {
-    "Description": "Bjarke is Head of CMS at Umbraco HQ. This package is provided in a personal capacity.",
+    "Description": "Bjarke Berg is Head of CMS at Umbraco HQ. This package is provided in a personal capacity.",
     "Url": "https://berg.dev",
     "ImageUrl": "https://umbraco.com/media/1rca05ze/bjarke-1.jpg",
     "Contributors": [
@@ -28,6 +28,14 @@
     {
       "ImageUrl": "https://raw.githubusercontent.com/bergmania/Bergmania.OpenStreetMap/main/assets/backoffice-content.png",
       "Caption": "View in content section of Backoffice"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/bergmania/Bergmania.OpenStreetMap/main/assets/backoffice-settings.png",
+      "Caption": "View in settings section of Backoffice, when changing the data type"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/bergmania/Bergmania.OpenStreetMap/main/assets/website-rendering.png",
+      "Caption": "View from the website"
     }
   ],
   "Tags": [
