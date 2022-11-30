@@ -1,13 +1,12 @@
 <Project>
 	<PropertyGroup>
-		<Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
 		<Product>Bergmania.OpenStreetMap</Product>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bergmania/Bergmania.OpenStreetMap</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/bergmania/Bergmania.OpenStreetMap/</PackageProjectUrl>
-		<AssemblyVersion>5.1.0</AssemblyVersion>
-		<Version>5.1.0</Version>
-		<InformationalVersion>5.1.0</InformationalVersion>
+		<AssemblyVersion>5.2.0</AssemblyVersion>
+		<Version>5.2.0</Version>
+		<InformationalVersion>5.2.0</InformationalVersion>
 		<Authors>Bjarke Berg</Authors>
 	</PropertyGroup>
 	
