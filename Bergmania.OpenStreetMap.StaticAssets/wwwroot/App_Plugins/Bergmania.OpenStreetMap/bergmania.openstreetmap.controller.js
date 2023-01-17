@@ -143,9 +143,13 @@
 
                     $scope.model.value.marker.latitude = marker.lat;
                     $scope.model.value.marker.longitude = marker.lng;
+                    vm.inputLat = marker.lat;
+                    vm.inputLng = marker.lng;
 
                 } else {
                     $scope.model.value.marker = null;
+                    vm.inputLat = null;
+                    vm.inputLng = null;
                 }
             }, 0);
         }
