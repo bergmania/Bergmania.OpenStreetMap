@@ -4,13 +4,17 @@
         const vm = this;
 
         vm.inputId = "osm_search_" + String.CreateGuid();
+        vm.inputLatId = "osm_Lat_" + String.CreateGuid();
+        vm.inputLngId = "osm_Lng_" + String.CreateGuid();
 
         vm.currentMarker = null;
         vm.showSearch = $scope.model.config.showSearch != null ? Object.toBoolean($scope.model.config.showSearch) : false;
+        vm.showSetMarkerByCoordinates = $scope.model.config.showSetMarkerByCoordinates != null ? Object.toBoolean($scope.model.config.showSetMarkerByCoordinates) : false;
         vm.showCoordinates = $scope.model.config.showCoordinates != null ? Object.toBoolean($scope.model.config.showCoordinates) : false;
         vm.allowClear = $scope.model.config.allowClear != null ? Object.toBoolean($scope.model.config.allowClear) : true;
         vm.scrollWheelZoom = $scope.model.config.scrollWheelZoom != null ? Object.toBoolean($scope.model.config.scrollWheelZoom) : true;
 
+        vm.setMarker = setMarker;
         vm.clearMarker = clearMarker;
 
         function onInit() {
@@ -38,6 +42,11 @@
 
             if (initValue.marker) {
                 vm.currentMarker = L.marker(L.latLng(initValue.marker.latitude, initValue.marker.longitude), { draggable: true }).addTo(vm.map);
+
+                if (vm.showSetMarkerByCoordinates) {
+                    vm.inputLat = initValue.marker.latitude
+                    vm.inputLng = initValue.marker.longitude
+                }
             }
 
             if (vm.currentMarker) {
@@ -65,6 +74,25 @@
             }
 
 
+        }
+
+        function setMarker() {
+            if (!Number.isFinite(vm.inputLat) || !Number.isFinite(vm.inputLng)) {
+                return
+            }
+
+            clearMarker();
+
+            const latlng = [vm.inputLat, vm.inputLng]
+
+            vm.map.setView(latlng);
+            vm.currentMarker = L.marker(latlng, { draggable: true }).addTo(vm.map);
+
+            if (vm.currentMarker) {
+                vm.currentMarker.on('dragend', updateModel);
+            }
+
+            updateModel();
         }
 
         function onMapClick(e) {
@@ -115,9 +143,13 @@
 
                     $scope.model.value.marker.latitude = marker.lat;
                     $scope.model.value.marker.longitude = marker.lng;
+                    vm.inputLat = marker.lat;
+                    vm.inputLng = marker.lng;
 
                 } else {
                     $scope.model.value.marker = null;
+                    vm.inputLat = null;
+                    vm.inputLng = null;
                 }
             }, 0);
         }

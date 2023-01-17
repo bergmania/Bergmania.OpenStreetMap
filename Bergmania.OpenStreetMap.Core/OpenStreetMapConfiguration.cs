@@ -18,6 +18,10 @@ namespace Bergmania.OpenStreetMap.Core
         [ConfigurationField("showCoordinates", "Show Coordinates", Constants.BooleanView, Description = "Show marker coordinates below map.")]
         public bool ShowCoordinates { get; set; } = false;
 
+        [DataMember(Name = "showSetMarkerByCoordinates")]
+        [ConfigurationField("showSetMarkerByCoordinates", "Show Set Marker By Coordinates", Constants.BooleanView, Description = "Set Marker By Coordinates field's above map.")]
+        public bool ShowSetMarkerByCoordinates { get; set; } = false;
+
         [DataMember(Name = "allowClear")]
         [ConfigurationField("allowClear", "Allow Clear", Constants.BooleanView, Description = "Allow clearing previous marker.")]
         public bool AllowClear { get; set; } = true;
