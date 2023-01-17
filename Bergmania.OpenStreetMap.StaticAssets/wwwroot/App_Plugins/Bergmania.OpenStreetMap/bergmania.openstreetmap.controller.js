@@ -77,7 +77,7 @@
         }
 
         function setMarker() {
-            if (!vm.inputLat || !vm.inputLng) {
+            if (!Number.isFinite(vm.inputLat) || !Number.isFinite(vm.inputLng)) {
                 return
             }
 
