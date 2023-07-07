@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco")
-    .controller("Bergmania.OpenStreetMap.Controller", ["$scope", "$element", "$timeout", "userService", function ($scope, $element, $timeout, userService) {
+    .controller("Bergmania.OpenStreetMap.Controller", ["$scope", "$element", "$timeout", "userService", "eventsService", function ($scope, $element, $timeout, userService, eventsService) {
 
         const vm = this;
 
@@ -17,6 +17,14 @@
         vm.setMarker = setMarker;
         vm.clearMarker = clearMarker;
 
+        var tabShownListener = eventsService.on("app.tabChange", function (e, args) {
+            setTimeout(() => {
+                vm.map.off();
+                vm.map.remove();
+                onInit();
+            }, 0)
+        });
+        
         function onInit() {
 
             const initValue = $scope.model.value || $scope.model.config.defaultPosition || { marker : { latitude: 54.975556, longitude : -1.621667}, "boundingBox":{"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}}, zoom: 16};
