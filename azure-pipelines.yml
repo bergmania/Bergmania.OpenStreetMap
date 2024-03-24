@@ -13,7 +13,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  dotnetVersion: 7.x
+  dotnetVersion: 8.x
   dotnetIncludePreviewVersions: true
 steps:
 - task: PowerShell@2
