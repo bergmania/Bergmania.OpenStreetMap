@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bergmania.OpenStreetMap.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bergmania.OpenStreetMap.StaticAssets", "Bergmania.OpenStreetMap.StaticAssets\Bergmania.OpenStreetMap.StaticAssets.csproj", "{036A1DCC-7D65-4F7E-ADAB-9F8E3B38DD89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bergmania.OpenStreetMap.Testsite.V13", "Bergmania.OpenStreetMap.Testsite.V13\Bergmania.OpenStreetMap.Testsite.V13.csproj", "{26B6AE63-25AE-467F-AB62-7125BC1C8814}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{036A1DCC-7D65-4F7E-ADAB-9F8E3B38DD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{036A1DCC-7D65-4F7E-ADAB-9F8E3B38DD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{036A1DCC-7D65-4F7E-ADAB-9F8E3B38DD89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B6AE63-25AE-467F-AB62-7125BC1C8814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B6AE63-25AE-467F-AB62-7125BC1C8814}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B6AE63-25AE-467F-AB62-7125BC1C8814}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B6AE63-25AE-467F-AB62-7125BC1C8814}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AB72652E-A769-4C42-A419-8ED696C55860} = {5114C3D3-99A7-4A55-8B86-D11292DA5346}

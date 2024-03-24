@@ -27,7 +27,20 @@
         
         function onInit() {
 
-            const initValue = $scope.model.value || $scope.model.config.defaultPosition || { marker : { latitude: 54.975556, longitude : -1.621667}, "boundingBox":{"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}}, zoom: 16};
+            const fallbackValue = { marker : { latitude: 54.975556, longitude : -1.621667}, "boundingBox":{"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}}, zoom: 16}
+            let initValue = $scope.model.value || $scope.model.config.defaultPosition || fallbackValue;
+            
+            if( initValue.hasOwnProperty('boundingBox') === false 
+                && initValue.hasOwnProperty('marker') === false 
+                && initValue.hasOwnProperty('zoom') === false ){
+                console.warn("WARNING! - OpenStreetMap input not recognized - Falling back to default values·")
+                initValue = fallbackValue;
+            }
+            
+            initValue.boundingBox ||= fallbackValue.boundingBox;
+            initValue.marker ||= fallbackValue.marker;
+            initValue.zoom ||= fallbackValue.zoom;
+            
             const tileLayer = $scope.model.config.tileLayer || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
             const tileLayerOptions = { attribution: $scope.model.config.tileLayerAttribution };
 
