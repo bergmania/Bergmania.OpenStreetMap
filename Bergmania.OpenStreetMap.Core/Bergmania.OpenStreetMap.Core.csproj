@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <Title>Bergmania.OpenStreetMap.Core</Title>
         <PackageIcon>icon-128.png</PackageIcon>
     </PropertyGroup>
@@ -10,10 +10,14 @@
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
     </ItemGroup>
-    
+
     <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="11.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.0.0" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.0.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
