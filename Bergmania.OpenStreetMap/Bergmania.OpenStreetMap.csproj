@@ -18,4 +18,9 @@
       <ProjectReference Include="..\Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj" />
       <ProjectReference Include="..\Bergmania.OpenStreetMap.StaticAssets\Bergmania.OpenStreetMap.StaticAssets.csproj" />
     </ItemGroup>
+
+    <ItemGroup Condition="'$(RootNamespace)' != 'Bergmania.OpenStreetMap.Testsite.V14'">
+        <ProjectReference Include="..\Bergmania.OpenStreetMap.Core.Legacy\Bergmania.OpenStreetMap.Core.Legacy.csproj" />
+        <ProjectReference Include="..\Bergmania.OpenStreetMap.StaticAssets\Bergmania.OpenStreetMap.StaticAssets.csproj" />
+    </ItemGroup>
 </Project>
