@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Title>Bergmania.OpenStreetMap.Core</Title>
+        <PackageIcon>icon-128.png</PackageIcon>
+        <RootNamespace>Bergmania.OpenStreetMap.Core</RootNamespace>
+    </PropertyGroup>
+
+   
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.0.0-beta003" />
+        <PackageReference Include="Umbraco.Cms.Api.Management" Version="14.0.0-beta003"  />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
+    </ItemGroup>
+</Project>

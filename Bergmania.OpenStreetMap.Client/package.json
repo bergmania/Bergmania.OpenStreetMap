@@ -1,0 +1,23 @@
+{
+  "name": "bergmania-openstreetmap",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:for:cms": "npm run build && node ./devops/build/copy-to-cms.js",
+    "preview": "vite preview",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "autocomplete": "^0.0.1",
+    "leaflet": "^1.9.4",
+    "lit": "^3.1.2"
+  },
+  "devDependencies": {
+    "@umbraco-cms/backoffice": "^14.0.0-beta003",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}

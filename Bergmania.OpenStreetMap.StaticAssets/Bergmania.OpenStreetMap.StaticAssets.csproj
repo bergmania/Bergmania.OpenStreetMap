@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -12,4 +12,35 @@
       <Folder Include="wwwroot" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <BasePath>$(ProjectDir)wwwroot\App_Plugins</BasePath>
+        <ClientPath>$(BasePath)\Bergmania.OpenStreetMap</ClientPath>
+    </PropertyGroup>
+
+    <Target Name="BuildStaticAssetsPreconditions" BeforeTargets="Build">
+        <Message Text="Skip BuildClient target because UmbracoBuild is '$(UmbracoBuild)' (this is not Visual Studio)" Importance="high" Condition="'$(UmbracoBuild)' != ''" />
+        <Message Text="Skip BuildClient target because '$(ClientPath)' already exists" Importance="high" Condition="Exists('$(ClientPath)')" />
+        <Message Text="Call BuildClient target because UmbracoBuild is empty (this is Rider/VS) and '$(ClientPath)' doesn't exist" Importance="high" Condition="'$(UmbracoBuild)' == '' and !Exists('$(ClientPath)')" />
+        <CallTarget Targets="BuildClient" Condition="'$(UmbracoBuild)' == '' and !Exists('$(ClientPath)')" />
+    </Target>
+
+    <Target Name="BuildClient">
+        <Exec WorkingDirectory="$(ProjectDir)..\Bergmania.OpenStreetMap.Client\" Command="npm ci --no-fund --no-audit --prefer-offline" />
+        <Exec WorkingDirectory="$(ProjectDir)..\Bergmania.OpenStreetMap.Client\" Command="npm run build:for:cms" />
+    </Target>
+
+    <Target Name="CleanStaticAssetsPreconditions" AfterTargets="Clean" Condition="'$(UmbracoBuild)' == ''">
+
+        <Message Text="Skip CleanClient target because '$(ClientPath)' doesn't exist" Importance="high" Condition="!Exists('$(ClientPath)')" />
+        <Message Text="Skip CleanClient target because preserve.Client marker file exists" Importance="high" Condition="Exists('$(ClientPath)') and Exists('$(SolutionDir)preserve.Client')" />
+        <Message Text="Call CleanClient target because '$(ClientPath)' exists and preserve.Client marker file doesn't exist" Importance="high" Condition="Exists('$(ClientPath)') and !Exists('$(SolutionDir)preserve.Client')" />
+        <CallTarget Targets="CleanClient" Condition="Exists('$(ClientPath)') and !Exists('$(SolutionDir)preserve.Client')" />
+    </Target>
+
+    <Target Name="CleanClient">
+        <ItemGroup>
+            <ClientDirectories Include="$(ClientPath);" />
+        </ItemGroup>
+        <RemoveDir Directories="@(ClientDirectories)" />
+    </Target>
 </Project>
