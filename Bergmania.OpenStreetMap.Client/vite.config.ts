@@ -6,7 +6,7 @@ export default defineConfig({
             entry: "src/bergmania-openstreetmap.ts", // your web component source file
             formats: ["es"],
         },
-        outDir: "dist", // your web component will be saved in this location
+        outDir: "../Bergmania.OpenStreetMap.StaticAssets/wwwroot/App_Plugins/Bergmania.OpenStreetMap", // your web component will be saved in this location
         sourcemap: true,
         rollupOptions: {
             external: [/^@umbraco/],

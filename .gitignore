@@ -34,6 +34,8 @@ bld/
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 
+/Bergmania.OpenStreetMap.Client/node_modules/
+/Bergmania.OpenStreetMap.StaticAssets/wwwroot/
 /Bergmania.OpenStreetMap.Testsite/App_Plugins/
 /Bergmania.OpenStreetMap.Testsite/umbraco/Logs
 /Bergmania.OpenStreetMap.Testsite/umbraco/Data/TEMP
