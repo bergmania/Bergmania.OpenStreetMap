@@ -2,7 +2,7 @@ import {customElement, html, LitElement, property, state} from '@umbraco-cms/bac
 import {UmbElementMixin} from '@umbraco-cms/backoffice/element-api';
 import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/property-editor";
 import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
-import {LatitudeLongitudeModel, OpenStreetMapModel} from "./models.ts";
+import { OpenStreetMapModel} from "./models.ts";
 import './auto-suggest.element.ts';
 import './bergmania-openstreetmap.ts';
 import { BermaniaOpenstreetmap } from './bergmania-openstreetmap.ts';
@@ -88,7 +88,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         }
     }
 
-    private setMarker(e: CustomEvent) {
+    private setMarker() {
         this.value = {
             ...this.value,
             marker: {
@@ -98,10 +98,10 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         }
     }
 
-    clearMarker(e: CustomEvent) {
+    clearMarker() {
         this.value = {
             ...this.value,
-            marker: null /** we need to do this right!  */
+            marker: null 
         };
         this.inputLat = '';
         this.inputLng = '';

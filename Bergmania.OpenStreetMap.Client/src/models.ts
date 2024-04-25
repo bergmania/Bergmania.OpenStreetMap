@@ -1,6 +1,6 @@
 export type OpenStreetMapModel = {
     zoom: number,
-    marker: LatitudeLongitudeModel,
+    marker: LatitudeLongitudeModel | null,
     boundingBox: BoundingBoxModel
 };
 

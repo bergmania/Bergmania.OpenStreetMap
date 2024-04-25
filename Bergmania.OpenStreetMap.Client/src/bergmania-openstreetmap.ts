@@ -1,5 +1,5 @@
 import { css, html, LitElement, customElement } from '@umbraco-cms/backoffice/external/lit';
-import {  Icon, LeafletEvent, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
+import {  Icon, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
 
 // @ts-ignore
 import * as L from 'leaflet/dist/leaflet-src.esm.js';
