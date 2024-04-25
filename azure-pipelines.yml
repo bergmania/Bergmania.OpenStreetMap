@@ -15,6 +15,7 @@ variables:
   buildConfiguration: 'Release'
   dotnetVersion: 8.x
   dotnetIncludePreviewVersions: true
+  nodeVersion: 20
 steps:
 - task: PowerShell@2
   displayName: 'Set version number'
@@ -46,7 +47,11 @@ steps:
     version: $(dotnetVersion)
     performMultiLevelLookup: true
     includePreviewVersions: $(dotnetIncludePreviewVersions)
-      
+- task: NodeTool@0
+  displayName: Use Node.js $(nodeVersion)
+  retryCountOnTaskFailure: 3
+  inputs:
+    versionSpec: $(nodeVersion)
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:

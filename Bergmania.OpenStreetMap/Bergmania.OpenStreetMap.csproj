@@ -2,7 +2,7 @@
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <Title>Bergmania.OpenStreetMap</Title>
         <PackageIcon>icon-128.png</PackageIcon>
         <ContentTargetFolders>.</ContentTargetFolders>
@@ -14,8 +14,10 @@
         <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
         <None Include="README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
+
     <ItemGroup>
-      <ProjectReference Include="..\Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj" />
-      <ProjectReference Include="..\Bergmania.OpenStreetMap.StaticAssets\Bergmania.OpenStreetMap.StaticAssets.csproj" />
+        <ProjectReference Include="..\Bergmania.OpenStreetMap.Core\Bergmania.OpenStreetMap.Core.csproj" />
+        <ProjectReference Include="..\Bergmania.OpenStreetMap.StaticAssets\Bergmania.OpenStreetMap.StaticAssets.csproj" />
     </ItemGroup>
+    
 </Project>

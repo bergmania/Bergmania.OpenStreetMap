@@ -22,6 +22,7 @@ Make a git-tag with this format `release/x.x.x`. The pipeline will pick it up an
 ## Contributions
 Thanks for the contributions
 - [Bjarke Berg](https://github.com/bergmania) (Initial creator)
+- [Filip Bech-Larsen](https://github.com/filipbech) (Maintainer)
 - [Bjarne Fyrstenborg](https://github.com/bjarnef)
 - [Arjan](https://github.com/creativesuspects)
 - [Yevhen Duyun](https://github.com/duyun-yevhen)
