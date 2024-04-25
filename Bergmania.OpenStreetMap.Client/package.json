@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:for:cms": "npm run build && node ./devops/build/copy-to-cms.js",
     "preview": "vite preview",
     "watch": "vite build --watch"
   },

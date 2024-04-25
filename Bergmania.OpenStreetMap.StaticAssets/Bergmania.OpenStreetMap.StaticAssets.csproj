@@ -26,7 +26,7 @@
 
     <Target Name="BuildClient">
         <Exec WorkingDirectory="$(ProjectDir)..\Bergmania.OpenStreetMap.Client\" Command="npm ci --no-fund --no-audit --prefer-offline" />
-        <Exec WorkingDirectory="$(ProjectDir)..\Bergmania.OpenStreetMap.Client\" Command="npm run build:for:cms" />
+        <Exec WorkingDirectory="$(ProjectDir)..\Bergmania.OpenStreetMap.Client\" Command="npm run build" />
     </Target>
 
     <Target Name="CleanStaticAssetsPreconditions" AfterTargets="Clean" Condition="'$(UmbracoBuild)' == ''">
