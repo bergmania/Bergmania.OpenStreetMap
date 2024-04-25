@@ -7,6 +7,8 @@ import { BoundingBoxModel, LatitudeLongitudeModel } from './models';
 
 const DEFAULT_BOUNDING_BOX = {"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}};
 
+const DEFAULT_TILELAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 const ICON: Icon = new L.Icon({
   iconUrl: '/App_Plugins/Bergmania.OpenStreetMap/marker-icon.png',
   shadowUrl: '/App_Plugins/Bergmania.OpenStreetMap/marker-shadow.png',
@@ -20,6 +22,9 @@ const ICON: Icon = new L.Icon({
 export class BermaniaOpenstreetmap extends LitElement {
 
   static styles = [css`
+    :host {
+      display:block;
+    }
     .map {
       width:100%;
       height:400px;
@@ -68,8 +73,8 @@ export class BermaniaOpenstreetmap extends LitElement {
   }
 
 
-  tileLayerPath: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  tileLayerOptions = { attribution: 'Bergmania Open Street Map' };
+  tileLayerPath: string = DEFAULT_TILELAYER;
+  tileLayerOptions: any | null = { attribution: 'Map data © OpenStreetMap contributors' };
 
   _map!: Map;
   _marker?: Marker;
@@ -79,7 +84,7 @@ export class BermaniaOpenstreetmap extends LitElement {
 
     const mapDomElement = this.renderRoot.querySelector('.map') as HTMLElement;
     if (!mapDomElement) {
-      console.log('no DOM element found. Bailing!')
+      console.warn('no DOM element found. Bailing!')
       return;
     }
 
@@ -111,8 +116,8 @@ export class BermaniaOpenstreetmap extends LitElement {
     );
   }
 
-  private tileLayer(tileLayePath:string, tileLayerOptions: TileLayerOptions) {
-    return L.tileLayer(tileLayePath, tileLayerOptions).addTo(this._map);
+  private tileLayer(tileLayePath:string , tileLayerOptions: TileLayerOptions) {
+    return L.tileLayer(tileLayePath ? tileLayePath : DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
   private clearMarker() {

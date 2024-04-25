@@ -1,13 +1,11 @@
 import {customElement, html, LitElement, property, state} from '@umbraco-cms/backoffice/external/lit';
 import {UmbElementMixin} from '@umbraco-cms/backoffice/element-api';
 import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/property-editor";
-// import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
+import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
 import {OpenStreetMapModel} from "./models.ts";
 import './auto-suggest.element.ts';
-
 import './bergmania-openstreetmap.ts';
 import { BermaniaOpenstreetmap } from './bergmania-openstreetmap.ts';
-import { AutoSuggestElement } from './auto-suggest.element.ts';
 
 
 @customElement('bergmania-openstreetmap-property-editor')
@@ -41,10 +39,12 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     private _defaultPosition?: OpenStreetMapModel;
     
     @state()
-    private inputLat?: number;
+    private inputLat?: string;
 
     @state()
-    private inputLng?: number;
+    private inputLng?: string;
+
+    searchLabel = 'Type to search';
 
     public set config(config: UmbPropertyEditorConfigCollection | undefined) {
         this._showSearch = config?.getValueByAlias('showSearch') ?? false;
@@ -59,12 +59,12 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
 
     async firstUpdated(changes:any) {
         super.firstUpdated(changes);
-        this.inputLat = this.value.marker?.latitude;
-        this.inputLng = this.value.marker?.longitude;
+        this.inputLat = ''+this.value.marker?.latitude;
+        this.inputLng = ''+this.value.marker?.longitude;
     }
 
     searchSelected(e: CustomEvent) {
-        const selected = e.target!.value as any;
+        const selected = (e.target as any).value as any;
 
         this.value = {
             ...this.value,
@@ -93,11 +93,21 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 longitude: (this.shadowRoot?.getElementById('inputLng')! as any).value
             }
         }
-        console.log('setMarker', e, this);
     }
 
     clearMarker(e: CustomEvent) {
-        console.log(e, this);
+        this.value = {
+            ...this.value,
+            marker: null
+        };
+        this.inputLat = '';
+        this.inputLng = '';
+
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        this.searchLabel = this.localize.term('osm_searchPlaceholder');
     }
 
     updateData(e: CustomEvent) {
@@ -107,16 +117,14 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             zoom: mapEle.zoom,
             marker: mapEle.markerLocation
         };
-        console.log('updateData',e);
-        this.inputLat = this.value.marker?.latitude;
-        this.inputLng = this.value.marker?.longitude;
+        this.inputLat = ''+this.value.marker?.latitude;
+        this.inputLng = ''+this.value.marker?.longitude;
         this.dispatchEvent(new CustomEvent('property-value-change'));
     }
 
     async getSuggestion(term: string) {
-        //TODO get this from somewhere
         const limit = 5;
-        const language = 'da-dk';
+        const language = await this.getUserLanguage();
         const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=${limit}&q=${encodeURI(term)}&accept-language=${language}`;
 
         return fetch(api).then(res=>res.json()).then(results => {
@@ -133,25 +141,29 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     
-    // private async getUserLanguage() {
-    //     return new Promise(res => {
-    //         this.getContext(UMB_CURRENT_USER_CONTEXT).then(userContext => {
-    //             this.observe(userContext.currentUser, user => {
-    //                 res(user?.languageIsoCode);
-    //             })
-    //         });
-    //     });  
-    // }
+    private async getUserLanguage() {
+        return new Promise(res => {
+            this.getContext(UMB_CURRENT_USER_CONTEXT).then(userContext => {
+                this.observe(userContext.currentUser, user => {
+                    res(user?.languageIsoCode);
+                })
+            });
+        });  
+    }
 
 
     render() {
         return html`
-            <p>${JSON.stringify(this.value)}</p>
-
             ${
                 this._showSearch 
                     ? html`
-                        <auto-suggest id="searchField" @autoSuggestSelect=${this.searchSelected} .getSuggestion=${this.getSuggestion}></auto-suggest>
+                        <auto-suggest 
+                            id="searchField" 
+                            placeholder=${this.searchLabel}
+                            @autoSuggestSelect=${this.searchSelected} 
+                            .getSuggestion=${this.getSuggestion.bind(this)}
+                            style="display:block; width:100%; margin-bottom:10px;"
+                        ></auto-suggest>
                     `
                     : ''
             }
@@ -159,8 +171,10 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             ${
                 this._showSetMarkerByCoordinates 
                     ? html`
-                        <uui-input label="[LOCALIZE] Lat" @change=${this.setMarker} .value=${this.inputLat} id="inputLat"></uui-input>
-                        <uui-input label="[LOCALIZE] Lng" @change=${this.setMarker} .value=${this.inputLng} id="inputLng"></uui-input>
+                        <div style="margin-bottom:10px;">
+                            <umb-localize key="osm_latitude"></umb-localize>: <uui-input label="Lat" @change=${this.setMarker} .value=${this.inputLat} id="inputLat" style="margin-right:10px;"></uui-input>
+                            <umb-localize key="osm_longitude"></umb-localize>: <uui-input label="Lng" @change=${this.setMarker} .value=${this.inputLng} id="inputLng"></uui-input>
+                        </div>
                     `
                     : ''
             }
@@ -170,15 +184,20 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 .markerLocation=${this.value.marker!}
                 .boundingBox=${this.value.boundingBox!}
                 @mapdata-changed=${this.updateData}
+                .tileLayerPath=${this._tileLayer}
+                .scrollWheelZoom=${this._scrollWheelZoom}
+                .tileLayerOptions=${this._tileLayerAttribution ? {attribution: this._tileLayerAttribution} : null}
+                style="margin-bottom:10px;"
             ></bergmania-openstreetmap>
 
-
             ${
-                this._showCoordinates || this._allowClear 
+                (this._showCoordinates || this._allowClear ) && this.value.marker
                     ? html`
-                        [LOCALIZE] Lat: ${this.value.marker?.latitude}, 
-                        [LOCALIZE] Lng: ${this.value.marker?.longitude}<br/>
-                        <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker}>[LOCALIZE] Clear</uui-button>
+                        <div style="clear:both;">
+                            <umb-localize key="osm_latitude"></umb-localize>: ${this.value.marker?.latitude}, 
+                            <umb-localize key="osm_longitude"></umb-localize>: ${this.value.marker?.longitude}
+                            <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker} look="outline" style="float:right;"><umb-localize key="osm_clear"></umb-localize></uui-button>
+                        </div>
                     `
                     : ''
             }
@@ -186,4 +205,4 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
 
         `;
     }
-}
+} 

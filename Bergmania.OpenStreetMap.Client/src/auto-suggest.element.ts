@@ -12,19 +12,47 @@ function debounced(delay:number, fn:(...args:any)=> void) {
 export class AutoSuggestElement extends LitElement {
 
     static styles? = [css`
+        :host {
+            display:block;
+            width:100%;
+            position: relative;
+            display: inline-flex;
+            align-items: stretch;
+            height: var(--uui-input-height, var(--uui-size-11, 33px));
+            text-align: left;
+            box-sizing: border-box;
+            background-color: var(--uui-input-background-color, var(--uui-color-surface, #fff));
+            border: var(--uui-input-border-width, 1px) solid var(--uui-input-border-color, var(--uui-color-border, #d8d7d9));
+            --uui-button-height: 100%;
+            --auto-width-text-margin-right: 0;
+            --auto-width-text-margin-left: 0;
+        }
+        :host(:focus-within) {
+            border-color: var(--uui-input-border-color-focus, var(--uui-color-border-emphasis, #a1a1a1));
+            outline: calc(2px* var(--uui-show-focus-outline, 1)) solid var(--uui-color-focus, #3879ff);
+        }
         label, label > strong {
             display: block;
         }
-        [type="search"] {
-            border: 1px solid #AAA;
-            font-size: 1rem;
-            margin-block: 0.5rem;
-            min-inline-size: 20rem;
-            padding: 0.5rem 0.75rem;
+        input {
+            font-family: inherit;
+            padding: var(--uui-size-1, 3px) var(--uui-size-space-3, 9px);
+            font-size: inherit;
+            color: inherit;
+            border-radius: 0;
+            box-sizing: border-box;
+            border: none;
+            background: none;
+            width: 100%;
+            height: inherit;
+            text-align: inherit;
+            outline: none;
+        }
+        input[type="search"] {
             -webkit-appearance: none
         }
 
-        [type="search"]::-webkit-search-cancel-button {
+        input[type="search"]::-webkit-search-cancel-button {
             --clear-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.016 15.609l-3.609-3.609 3.609-3.609-1.406-1.406-3.609 3.609-3.609-3.609-1.406 1.406 3.609 3.609-3.609 3.609 1.406 1.406 3.609-3.609 3.609 3.609zM12 2.016q4.125 0 7.055 2.93t2.93 7.055-2.93 7.055-7.055 2.93-7.055-2.93-2.93-7.055 2.93-7.055 7.055-2.93z"/></svg>');
             background-color: currentColor;
             display: block;
@@ -45,6 +73,9 @@ export class AutoSuggestElement extends LitElement {
 
     value: any;
 
+    @property()
+    placeholder = "";
+
     protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
         this.input = this.shadowRoot?.getElementById('searchField') as HTMLInputElement;
         this.list = this.shadowRoot?.getElementById('suggestions') as HTMLDataListElement;
@@ -53,7 +84,6 @@ export class AutoSuggestElement extends LitElement {
         // this.input.addEventListener('keyup', debounced(200, this.onKeyup.bind(this)));
 
         this.input.addEventListener('search', () => {
-            console.log('search');
             this.input.value.length === 0  
                 ? this.reset() 
                 : ''
@@ -99,8 +129,9 @@ export class AutoSuggestElement extends LitElement {
                 autocapitalize="off"
                 autocomplete="off"
                 autocorrect="off"
-                type="text" 
+                type="search" 
                 id="searchField" 
+                placeholder=${this.placeholder}
                 list="suggestions" />
             <datalist id="suggestions"><option value=""></option></datalist>
         `;
