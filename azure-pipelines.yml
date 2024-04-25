@@ -51,7 +51,7 @@ steps:
   displayName: Use Node.js $(nodeVersion)
   retryCountOnTaskFailure: 3
   inputs:
-  versionSpec: $(nodeVersion)
+    versionSpec: $(nodeVersion)
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
