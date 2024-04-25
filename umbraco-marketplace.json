@@ -7,6 +7,10 @@
     "ImageUrl": "https://umbraco.com/media/1rca05ze/bjarke-1.jpg",
     "Contributors": [
       {
+        "Name": "Filip Bech-Larsen",
+        "Url": "https://github.com/filipbech"
+      },
+      {
         "Name": "Bjarne Fyrstenborg",
         "Url": "https://github.com/bjarnef"
       },
