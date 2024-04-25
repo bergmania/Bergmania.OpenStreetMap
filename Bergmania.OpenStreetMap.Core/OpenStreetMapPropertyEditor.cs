@@ -8,18 +8,12 @@ namespace Bergmania.OpenStreetMap.Core
     [DataEditor(
         Constants.EditorAlias,
         ValueType = ValueTypes.Json)]
-    public class OpenStreetMapPropertyEditor : DataEditor
+    public class OpenStreetMapPropertyEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper)
+        : DataEditor(dataValueEditorFactory)
     {
-        private readonly IIOHelper _ioHelper;
+        private readonly IIOHelper _ioHelper = ioHelper;
 
-        public OpenStreetMapPropertyEditor(
-            IDataValueEditorFactory dataValueEditorFactory,
-            IIOHelper ioHelper)
-            : base(dataValueEditorFactory)
-        {
-            _ioHelper = ioHelper;
-        }
-        
+
         /// <inheritdoc />
         protected override IDataValueEditor CreateValueEditor() => DataValueEditorFactory.Create<OpenStreetMapPropertyValueEditor>(Attribute);
         
