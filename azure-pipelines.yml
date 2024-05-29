@@ -52,6 +52,16 @@ steps:
   retryCountOnTaskFailure: 3
   inputs:
     versionSpec: $(nodeVersion)
+- task: Npm@1
+  displayName: NPM Install
+  inputs:
+      command: 'custom'
+      customCommand: 'run ci'
+- task: Npm@1
+  displayName: NPM Build
+  inputs:
+    command: 'custom'
+    customCommand: 'run build'
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
