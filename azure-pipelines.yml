@@ -57,11 +57,13 @@ steps:
   inputs:
       command: 'custom'
       customCommand: 'run ci'
+      workingDir: 'Bergmania.OpenStreetMap.Client/'
 - task: Npm@1
   displayName: NPM Build
   inputs:
     command: 'custom'
     customCommand: 'run build'
+    workingDir: 'Bergmania.OpenStreetMap.Client/'
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
