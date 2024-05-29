@@ -55,8 +55,7 @@ steps:
 - task: Npm@1
   displayName: NPM Install
   inputs:
-      command: 'custom'
-      customCommand: 'run ci'
+      command: 'ci'
       workingDir: 'Bergmania.OpenStreetMap.Client/'
 - task: Npm@1
   displayName: NPM Build
