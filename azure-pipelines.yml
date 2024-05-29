@@ -52,6 +52,17 @@ steps:
   retryCountOnTaskFailure: 3
   inputs:
     versionSpec: $(nodeVersion)
+- task: Npm@1
+  displayName: NPM Install
+  inputs:
+      command: 'ci'
+      workingDir: 'Bergmania.OpenStreetMap.Client/'
+- task: Npm@1
+  displayName: NPM Build
+  inputs:
+    command: 'custom'
+    customCommand: 'run build'
+    workingDir: 'Bergmania.OpenStreetMap.Client/'
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
