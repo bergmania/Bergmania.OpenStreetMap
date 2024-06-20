@@ -83,9 +83,9 @@ export class AutoSuggestElement extends LitElement {
         this.input.addEventListener('input', debounced(200, this.onEntry.bind(this)));
 
         this.input.addEventListener('search', () => {
-            this.input.value.length === 0  
-                ? this.reset() 
-                : ''
+            if(this.input.value.length === 0){
+                this.reset();
+            }
         });
 
     }
