@@ -21,7 +21,7 @@ const ICON: Icon = new L.Icon({
 @customElement('bergmania-openstreetmap')
 export class BermaniaOpenstreetmap extends LitElement {
 
-  static styles = [css`
+  static readonly styles = [css`
     :host {
       display:block;
     }
@@ -74,7 +74,7 @@ export class BermaniaOpenstreetmap extends LitElement {
 
 
   tileLayerPath: string = DEFAULT_TILELAYER;
-  tileLayerOptions: any | null = { attribution: 'Map data © OpenStreetMap contributors' };
+  tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors' };
 
   _map!: Map;
   _marker?: Marker;
@@ -117,7 +117,7 @@ export class BermaniaOpenstreetmap extends LitElement {
   }
 
   private tileLayer(tileLayePath:string , tileLayerOptions: TileLayerOptions) {
-    return L.tileLayer(tileLayePath ? tileLayePath : DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
+    return L.tileLayer(tileLayePath || DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
   private clearMarker() {

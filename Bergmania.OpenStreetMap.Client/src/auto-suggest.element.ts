@@ -11,7 +11,7 @@ function debounced(delay:number, fn:(...args:any)=> void) {
 @customElement('auto-suggest')
 export class AutoSuggestElement extends LitElement {
 
-    static styles? = [css`
+    static readonly styles? = [css`
         :host {
             display:block;
             width:100%;
@@ -81,7 +81,6 @@ export class AutoSuggestElement extends LitElement {
         this.list = this.shadowRoot?.getElementById('suggestions') as HTMLDataListElement;
 
         this.input.addEventListener('input', debounced(200, this.onEntry.bind(this)));
-        // this.input.addEventListener('keyup', debounced(200, this.onKeyup.bind(this)));
 
         this.input.addEventListener('search', () => {
             this.input.value.length === 0  
