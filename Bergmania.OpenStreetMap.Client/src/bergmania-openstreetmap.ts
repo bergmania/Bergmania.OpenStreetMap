@@ -121,7 +121,7 @@ export class BermaniaOpenstreetmap extends LitElement {
   }
 
   private clearMarker() {
-    this._marker!.remove();
+    this._marker?.remove();
     this._marker = undefined;
   }
 
@@ -129,13 +129,16 @@ export class BermaniaOpenstreetmap extends LitElement {
     if(this._marker) {
       this.clearMarker();
     }
-    this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
-    this._markerLocation = position;
+    if(position){
+      this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
+      this._markerLocation = position;
+    }
+
     if(!first) {
       this._map.setView(L.latLng(position.latitude, position.longitude));
       this.updateModel();
     }
-    this._marker!.on('dragend', () => {
+    this._marker?.on('dragend', () => {
       this._markerLocation = {latitude: this._marker!.getLatLng().lat, longitude: this._marker!.getLatLng().lng};
       this.updateModel()
     });    

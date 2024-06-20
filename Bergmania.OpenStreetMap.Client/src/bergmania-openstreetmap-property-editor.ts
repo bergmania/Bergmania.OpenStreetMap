@@ -4,9 +4,9 @@ import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/propert
 import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
 import { OpenStreetMapModel} from "./models.ts";
 import './auto-suggest.element.ts';
-import { BermaniaOpenstreetmap } from './bergmania-openstreetmap.ts';
-import { UUIInputElement } from '@umbraco-cms/backoffice/external/uui';     
-
+import { UUIInputElement } from '@umbraco-cms/backoffice/external/uui';
+import './bergmania-openstreetmap.ts';               
+import type {BermaniaOpenstreetmap} from "./bergmania-openstreetmap.ts";     
 
 @customElement('bergmania-openstreetmap-property-editor')
 export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbElementMixin(LitElement) {
