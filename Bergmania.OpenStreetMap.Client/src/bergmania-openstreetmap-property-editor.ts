@@ -5,6 +5,7 @@ import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
 import { OpenStreetMapModel} from "./models.ts";
 import './auto-suggest.element.ts';
 import { BermaniaOpenstreetmap } from './bergmania-openstreetmap.ts';
+import { UUIInputElement } from '@umbraco-cms/backoffice/external/uui';     
 
 
 @customElement('bergmania-openstreetmap-property-editor')
@@ -91,8 +92,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         this.value = {
             ...this.value,
             marker: {
-                latitude: (this.shadowRoot?.getElementById('inputLat') as any).value,
-                longitude: (this.shadowRoot?.getElementById('inputLng') as any).value
+                latitude: parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string),
+                longitude: parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string)
             }
         }
     }
