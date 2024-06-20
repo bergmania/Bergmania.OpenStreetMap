@@ -21,7 +21,7 @@ const ICON: Icon = new L.Icon({
 @customElement('bergmania-openstreetmap')
 export class BermaniaOpenstreetmap extends LitElement {
 
-  static styles = [css`
+  static readonly styles = [css`
     :host {
       display:block;
     }
@@ -74,7 +74,7 @@ export class BermaniaOpenstreetmap extends LitElement {
 
 
   tileLayerPath: string = DEFAULT_TILELAYER;
-  tileLayerOptions: any | null = { attribution: 'Map data © OpenStreetMap contributors' };
+  tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors' };
 
   _map!: Map;
   _marker?: Marker;
@@ -117,11 +117,11 @@ export class BermaniaOpenstreetmap extends LitElement {
   }
 
   private tileLayer(tileLayePath:string , tileLayerOptions: TileLayerOptions) {
-    return L.tileLayer(tileLayePath ? tileLayePath : DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
+    return L.tileLayer(tileLayePath || DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
   private clearMarker() {
-    this._marker!.remove();
+    this._marker?.remove();
     this._marker = undefined;
   }
 
@@ -129,13 +129,16 @@ export class BermaniaOpenstreetmap extends LitElement {
     if(this._marker) {
       this.clearMarker();
     }
-    this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
-    this._markerLocation = position;
+    if(position){
+      this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
+      this._markerLocation = position;
+    }
+
     if(!first) {
       this._map.setView(L.latLng(position.latitude, position.longitude));
       this.updateModel();
     }
-    this._marker!.on('dragend', () => {
+    this._marker?.on('dragend', () => {
       this._markerLocation = {latitude: this._marker!.getLatLng().lat, longitude: this._marker!.getLatLng().lng};
       this.updateModel()
     });    

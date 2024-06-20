@@ -4,9 +4,9 @@ import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/propert
 import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
 import { OpenStreetMapModel} from "./models.ts";
 import './auto-suggest.element.ts';
-import './bergmania-openstreetmap.ts';
-import { BermaniaOpenstreetmap } from './bergmania-openstreetmap.ts';
-
+import { UUIInputElement } from '@umbraco-cms/backoffice/external/uui';
+import './bergmania-openstreetmap.ts';               
+import type {BermaniaOpenstreetmap} from "./bergmania-openstreetmap.ts";     
 
 @customElement('bergmania-openstreetmap-property-editor')
 export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbElementMixin(LitElement) {
@@ -60,14 +60,14 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
 
     async firstUpdated(changes:any) {
         super.firstUpdated(changes);
-        if(this.value && this.value.marker) { 
+        if(this.value?.marker) { 
             this.inputLat = ''+this.value.marker?.latitude;
             this.inputLng = ''+this.value.marker?.longitude;
         }
     }
 
     searchSelected(e: CustomEvent) {
-        const selected = (e.target as any).value as any;
+        const selected = (e.target as any).value;
 
         this.value = {
             ...this.value,
@@ -92,8 +92,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         this.value = {
             ...this.value,
             marker: {
-                latitude: (this.shadowRoot?.getElementById('inputLat')! as any).value,
-                longitude: (this.shadowRoot?.getElementById('inputLng')! as any).value
+                latitude: parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string),
+                longitude: parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string)
             }
         }
     }
@@ -120,7 +120,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             zoom: mapEle.zoom,
             marker: mapEle.markerLocation
         };
-        if(this.value && this.value.marker) { 
+        if(this.value?.marker) { 
             this.inputLat = ''+this.value.marker?.latitude;
             this.inputLng = ''+this.value.marker?.longitude;
         }
@@ -185,9 +185,9 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             }
     
             <bergmania-openstreetmap
-                .zoom=${this.value && this.value.zoom ? this.value.zoom! : this._defaultPosition?.zoom!}
-                .markerLocation=${this.value && this.value.marker ? this.value.marker! : this._defaultPosition?.marker!}
-                .boundingBox=${this.value && this.value.boundingBox ? this.value.boundingBox! : this._defaultPosition?.boundingBox!}
+                .zoom=${this.value?.zoom ? this.value.zoom : this._defaultPosition?.zoom!}
+                .markerLocation=${this.value?.marker ? this.value.marker : this._defaultPosition?.marker!}
+                .boundingBox=${this.value?.boundingBox ? this.value.boundingBox : this._defaultPosition?.boundingBox!}
                 @mapdata-changed=${this.updateData}
                 .tileLayerPath=${this._tileLayer}
                 .scrollWheelZoom=${this._scrollWheelZoom}
@@ -196,7 +196,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             ></bergmania-openstreetmap>
 
             ${
-                (this._showCoordinates || this._allowClear ) && this.value && this.value.marker
+                (this._showCoordinates || this._allowClear ) && this.value?.marker
                     ? html`
                         <div style="clear:both;">
                             <umb-localize key="osm_latitude"></umb-localize>: ${this.value.marker?.latitude}, 
