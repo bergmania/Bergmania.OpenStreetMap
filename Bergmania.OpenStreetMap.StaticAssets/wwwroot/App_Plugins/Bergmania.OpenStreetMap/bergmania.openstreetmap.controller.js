@@ -218,7 +218,10 @@
 
                 // we add an action to enter or click
                 onSubmit: ({ object }) => {
-
+                    if(object === undefined || object === null){
+                        return;
+                    }
+                    
                     const { display_name, category } = object.properties;
                     const coords = object.geometry.coordinates;
 
