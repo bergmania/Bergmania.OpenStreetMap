@@ -2,7 +2,7 @@
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>Umbraco extension containing a Map property editor using OpenStreetMaps</Description>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Title>Bergmania.OpenStreetMap</Title>
         <PackageIcon>icon-128.png</PackageIcon>
         <ContentTargetFolders>.</ContentTargetFolders>
