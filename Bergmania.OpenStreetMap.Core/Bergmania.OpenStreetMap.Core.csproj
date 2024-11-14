@@ -9,8 +9,8 @@
 
    
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Web.Website" Version="[15.0.0-rc, 21.0.0)" />
-        <PackageReference Include="Umbraco.Cms.Api.Management" Version="[15.0.0-rc, 21.0.0)"  />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="[15.0.0, 21.0.0)" />
+        <PackageReference Include="Umbraco.Cms.Api.Management" Version="[15.0.0, 21.0.0)"  />
     </ItemGroup>
     <ItemGroup>
         <None Include="../assets/icon-128.png" Pack="true" PackagePath="" />
