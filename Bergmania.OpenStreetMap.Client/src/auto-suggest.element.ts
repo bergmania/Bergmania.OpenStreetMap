@@ -118,7 +118,8 @@ export class AutoSuggestElement extends LitElement {
 		}
 
         this.data = await this.getSuggestion(value);
-        this.list.innerHTML = this.data.map(obj => `<option value="${obj.name}" data-obj='${obj ? JSON.stringify(obj):''}'>`).join('')
+        this.list.innerHTML = this.data.map(obj => `<option value="${obj.name}" data-obj='${obj ? JSON.stringify(obj):''}'>${obj.name}</option>
+`).join('')
 
 	}
 
