@@ -66,12 +66,6 @@
               "propertyEditorUiAlias": "Umb.PropertyEditorUi.Toggle"
             },
             {
-              "alias": "showSetMarkerByCoordinates",
-              "label": "Show Set Marker By Coordinates",
-              "description": "Set Marker By Coordinates field's above map.",
-              "propertyEditorUiAlias": "Umb.PropertyEditorUi.Toggle"
-            },
-            {
               "alias": "allowClear",
               "label": "Allow Clear",
               "description": "Allow clearing previous marker.",
