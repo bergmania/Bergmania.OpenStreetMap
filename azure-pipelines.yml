@@ -13,7 +13,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  dotnetVersion: 9.x
+  dotnetVersion: 10.x
   dotnetIncludePreviewVersions: true
   nodeVersion: 20
 steps:
