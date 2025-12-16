@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Solution files/">
+    <File Path=".gitignore" />
+    <File Path="azure-pipelines.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="Readme.md" />
+    <File Path="umbraco-marketplace.json" />
+  </Folder>
+  <Folder Name="/Solution files/assets/">
+    <File Path="assets/icon-128.png" />
+    <File Path="assets/icon-512.png" />
+    <File Path="assets/icon.svg" />
+  </Folder>
+  <Project Path="Bergmania.OpenStreetMap.Core/Bergmania.OpenStreetMap.Core.csproj" />
+  <Project Path="Bergmania.OpenStreetMap.StaticAssets/Bergmania.OpenStreetMap.StaticAssets.csproj" />
+  <Project Path="Bergmania.OpenStreetMap.Testsite.V17/Bergmania.OpenStreetMap.Testsite.V17.csproj" />
+  <Project Path="Bergmania.OpenStreetMap/Bergmania.OpenStreetMap.csproj" />
+  <Project Path="Bergmania.OpenStreetMap.Client/Bergmania.OpenStreetMap.Client.esproj" />
+</Solution>

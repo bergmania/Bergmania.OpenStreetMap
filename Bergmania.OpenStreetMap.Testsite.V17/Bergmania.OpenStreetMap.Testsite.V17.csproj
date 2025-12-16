@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Bergmania.OpenStreetMap.Testsite.V14</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms" Version="15.0.0"/>
+        <PackageReference Include="Umbraco.Cms" Version="17.0.0"/>
+        <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.0.0"/>
     </ItemGroup>
 
     <ItemGroup>

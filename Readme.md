@@ -26,3 +26,4 @@ Thanks for the contributions
 - [Bjarne Fyrstenborg](https://github.com/bjarnef)
 - [Arjan](https://github.com/creativesuspects)
 - [Yevhen Duyun](https://github.com/duyun-yevhen)
+- [David Thibault](https://github.com/leddt)
