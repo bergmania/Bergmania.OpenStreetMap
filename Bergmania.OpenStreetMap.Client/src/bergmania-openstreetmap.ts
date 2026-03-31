@@ -74,7 +74,7 @@ export class BermaniaOpenstreetmap extends LitElement {
 
 
   tileLayerPath: string = DEFAULT_TILELAYER;
-  tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors' };
+  tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors', referrerPolicy: 'strict-origin-when-cross-origin' };
 
   _map!: Map;
   _marker?: Marker;

@@ -191,7 +191,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 @mapdata-changed=${this.updateData}
                 .tileLayerPath=${this._tileLayer}
                 .scrollWheelZoom=${this._scrollWheelZoom}
-                .tileLayerOptions=${this._tileLayerAttribution ? {attribution: this._tileLayerAttribution} : null}
+                .tileLayerOptions=${this._tileLayerAttribution ? {attribution: this._tileLayerAttribution, referrerPolicy: 'strict-origin-when-cross-origin'} : null}
                 style="margin-bottom:10px;"
             ></bergmania-openstreetmap>
 
