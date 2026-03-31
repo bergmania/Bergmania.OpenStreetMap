@@ -33,7 +33,8 @@ let map = L.map(elem).fitBounds(L.latLngBounds(L.latLng(data.boundingBox.southWe
 
 // Add OSM tile layer to the Leaflet map.
 L.tileLayer(config.tileLayer, {
-    attribution: config.tileLayerAttribution
+    attribution: config.tileLayerAttribution,
+    referrerPolicy: 'strict-origin-when-cross-origin'
 }).addTo(map);
 
 if(data.marker){

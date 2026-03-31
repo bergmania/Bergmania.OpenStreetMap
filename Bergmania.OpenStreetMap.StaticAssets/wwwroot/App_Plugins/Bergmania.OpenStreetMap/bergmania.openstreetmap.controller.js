@@ -42,7 +42,7 @@
             initValue.zoom ||= fallbackValue.zoom;
             
             const tileLayer = $scope.model.config.tileLayer || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-            const tileLayerOptions = { attribution: $scope.model.config.tileLayerAttribution };
+            const tileLayerOptions = { attribution: $scope.model.config.tileLayerAttribution, referrerPolicy: 'strict-origin-when-cross-origin' };
 
             vm.map = L.map($element.find("[data-openstreetmap]")[0], { scrollWheelZoom: vm.scrollWheelZoom })
                 .fitBounds(L.latLngBounds(L.latLng(initValue.boundingBox.southWestCorner.latitude, initValue.boundingBox.southWestCorner.longitude),
