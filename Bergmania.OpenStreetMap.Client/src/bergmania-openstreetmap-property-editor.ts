@@ -89,12 +89,47 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     private setMarker() {
+        const lat = Number.parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string);
+        const lng = Number.parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string);
         this.value = {
             ...this.value,
-            marker: {
-                latitude: parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string),
-                longitude: parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string)
-            }
+            marker: { latitude: lat, longitude: lng },
+            boundingBox: this.boundingBoxFromPoint(lat, lng)
+        }
+    }
+
+    private handlePaste(e: ClipboardEvent) {
+        const text = e.clipboardData?.getData('text');
+        if (!text) return;
+
+        const match = /^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/.exec(text.trim());
+        if (match) {
+            e.preventDefault();
+            const lat = Number.parseFloat(match[1]);
+            const lng = Number.parseFloat(match[2]);
+            this.inputLat = match[1];
+            this.inputLng = match[2];
+            this.value = {
+                ...this.value,
+                marker: { latitude: lat, longitude: lng },
+                boundingBox: this.boundingBoxFromPoint(lat, lng)
+            };
+        }
+    }
+
+    private boundingBoxFromPoint(lat: number, lng: number) {
+        const zoom = this.value?.zoom ?? 16;
+        const offset = 180 / Math.pow(2, zoom);
+        return {
+            southWestCorner: { latitude: lat - offset, longitude: lng - offset },
+            northEastCorner: { latitude: lat + offset, longitude: lng + offset }
+        };
+    }
+
+    private async copyCoordinates() {
+        if (this.value?.marker) {
+            const text = `${this.value.marker.latitude},${this.value.marker.longitude}`;
+            await navigator.clipboard.writeText(text);
         }
     }
 
@@ -177,8 +212,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 this._showSetMarkerByCoordinates 
                     ? html`
                         <div style="margin-bottom:10px;">
-                            <umb-localize key="osm_latitude"></umb-localize>: <uui-input label="Lat" @change=${this.setMarker} .value=${this.inputLat} id="inputLat" style="margin-right:10px;"></uui-input>
-                            <umb-localize key="osm_longitude"></umb-localize>: <uui-input label="Lng" @change=${this.setMarker} .value=${this.inputLng} id="inputLng"></uui-input>
+                            <umb-localize key="osm_latitude"></umb-localize>: <uui-input label="Lat" @change=${this.setMarker} @paste=${this.handlePaste} .value=${this.inputLat} id="inputLat" style="margin-right:10px;"></uui-input>
+                            <umb-localize key="osm_longitude"></umb-localize>: <uui-input label="Lng" @change=${this.setMarker} @paste=${this.handlePaste} .value=${this.inputLng} id="inputLng"></uui-input>
                         </div>
                     `
                     : ''
@@ -199,9 +234,10 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 (this._showCoordinates || this._allowClear ) && this.value?.marker
                     ? html`
                         <div style="clear:both;">
-                            <umb-localize key="osm_latitude"></umb-localize>: ${this.value.marker?.latitude}, 
+                            <umb-localize key="osm_latitude"></umb-localize>: ${this.value.marker?.latitude},
                             <umb-localize key="osm_longitude"></umb-localize>: ${this.value.marker?.longitude}
-                            <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker} look="outline" style="float:right;"><umb-localize key="osm_clear"></umb-localize></uui-button>
+                            <uui-button @click=${this.copyCoordinates} look="default" compact label="Copy coordinates"><umb-icon name="icon-documents"></umb-icon></uui-button>
+                            <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker} look="default" compact label="Clear marker" style="float:right;"><umb-icon name="icon-trash"></umb-icon></uui-button>
                         </div>
                     `
                     : ''
