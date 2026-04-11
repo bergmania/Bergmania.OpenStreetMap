@@ -89,8 +89,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     private setMarker() {
-        const lat = parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string);
-        const lng = parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string);
+        const lat = Number.parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string);
+        const lng = Number.parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string);
         this.value = {
             ...this.value,
             marker: { latitude: lat, longitude: lng },
@@ -102,11 +102,11 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         const text = e.clipboardData?.getData('text');
         if (!text) return;
 
-        const match = text.trim().match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+        const match = /^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/.exec(text.trim());
         if (match) {
             e.preventDefault();
-            const lat = parseFloat(match[1]);
-            const lng = parseFloat(match[2]);
+            const lat = Number.parseFloat(match[1]);
+            const lng = Number.parseFloat(match[2]);
             this.inputLat = match[1];
             this.inputLng = match[2];
             this.value = {
