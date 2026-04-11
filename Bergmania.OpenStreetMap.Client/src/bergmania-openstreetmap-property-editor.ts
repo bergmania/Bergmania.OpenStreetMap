@@ -102,7 +102,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         const text = e.clipboardData?.getData('text');
         if (!text) return;
 
-        const match = text.trim().match(/^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$/);
+        const match = text.trim().match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
         if (match) {
             e.preventDefault();
             const lat = parseFloat(match[1]);
