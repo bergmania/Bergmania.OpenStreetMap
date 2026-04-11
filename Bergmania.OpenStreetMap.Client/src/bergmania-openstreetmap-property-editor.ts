@@ -89,12 +89,12 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     private setMarker() {
+        const lat = parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string);
+        const lng = parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string);
         this.value = {
             ...this.value,
-            marker: {
-                latitude: parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string),
-                longitude: parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string)
-            }
+            marker: { latitude: lat, longitude: lng },
+            boundingBox: this.boundingBoxFromPoint(lat, lng)
         }
     }
 
@@ -105,16 +105,25 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         const match = text.trim().match(/^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$/);
         if (match) {
             e.preventDefault();
+            const lat = parseFloat(match[1]);
+            const lng = parseFloat(match[2]);
             this.inputLat = match[1];
             this.inputLng = match[2];
             this.value = {
                 ...this.value,
-                marker: {
-                    latitude: parseFloat(match[1]),
-                    longitude: parseFloat(match[2])
-                }
+                marker: { latitude: lat, longitude: lng },
+                boundingBox: this.boundingBoxFromPoint(lat, lng)
             };
         }
+    }
+
+    private boundingBoxFromPoint(lat: number, lng: number) {
+        const zoom = this.value?.zoom ?? 16;
+        const offset = 180 / Math.pow(2, zoom);
+        return {
+            southWestCorner: { latitude: lat - offset, longitude: lng - offset },
+            northEastCorner: { latitude: lat + offset, longitude: lng + offset }
+        };
     }
 
     private async copyCoordinates() {
@@ -227,8 +236,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                         <div style="clear:both;">
                             <umb-localize key="osm_latitude"></umb-localize>: ${this.value.marker?.latitude},
                             <umb-localize key="osm_longitude"></umb-localize>: ${this.value.marker?.longitude}
-                            <uui-button @click=${this.copyCoordinates} look="outline" compact><umb-localize key="osm_copyCoordinates"></umb-localize></uui-button>
-                            <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker} look="outline" style="float:right;"><umb-localize key="osm_clear"></umb-localize></uui-button>
+                            <uui-button @click=${this.copyCoordinates} look="default" compact label="Copy coordinates"><umb-icon name="icon-documents"></umb-icon></uui-button>
+                            <uui-button @click=${this.clearMarker} .disabled=${!this.value?.marker} look="default" compact label="Clear marker" style="float:right;"><umb-icon name="icon-trash"></umb-icon></uui-button>
                         </div>
                     `
                     : ''
