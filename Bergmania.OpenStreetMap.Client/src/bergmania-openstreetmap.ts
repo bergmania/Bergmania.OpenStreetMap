@@ -135,13 +135,15 @@ export class BermaniaOpenstreetmap extends LitElement {
     }
 
     if(!first) {
-      this._map.setView(L.latLng(position.latitude, position.longitude));
+      if(position) {
+        this._map.setView(L.latLng(position.latitude, position.longitude));
+      }
       this.updateModel();
     }
     this._marker?.on('dragend', () => {
       this._markerLocation = {latitude: this._marker!.getLatLng().lat, longitude: this._marker!.getLatLng().lng};
       this.updateModel()
-    });    
+    });
   }
 
   private setZoom(level:number) {
