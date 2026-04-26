@@ -91,6 +91,9 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     private setMarker() {
         const lat = Number.parseFloat((this.shadowRoot?.getElementById('inputLat') as UUIInputElement).value as string);
         const lng = Number.parseFloat((this.shadowRoot?.getElementById('inputLng') as UUIInputElement).value as string);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+            return;
+        }
         this.value = {
             ...this.value,
             marker: { latitude: lat, longitude: lng },
