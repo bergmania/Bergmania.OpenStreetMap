@@ -18,11 +18,13 @@ The markers are available as `Markers` on the model. `Marker` is still there and
 ```cshtml
 @foreach (var marker in Model.Map.Markers)
 {
-    <p>@marker.Latitude, @marker.Longitude</p>
+    <p>@marker.Title: @marker.Latitude, @marker.Longitude</p>
 }
 ```
 
-`@Model.Map.LeafletRendering()` shows all markers. Rendering the model directly (`@Model.Map`) uses the OpenStreetMap embed, which only supports a single marker and shows the first one.
+Each marker can be given an optional title in the list below the map, e.g. the name of a branch or office.
+
+`@Model.Map.LeafletRendering()` shows all markers, with the title in a popup when a marker is clicked. Rendering the model directly (`@Model.Map`) uses the OpenStreetMap embed, which only supports a single marker and shows the first one.
 
 If a Data Type is switched back to a single marker, the extra markers stay stored but are not shown or exposed, until an editor moves or clears the marker.
 

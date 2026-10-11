@@ -3,7 +3,7 @@ import {  Icon, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet
 
 // @ts-ignore
 import * as L from 'leaflet/dist/leaflet-src.esm.js';
-import { BoundingBoxModel, LatitudeLongitudeModel, sameMarkers } from './models';
+import { BoundingBoxModel, MarkerModel, sameMarkers } from './models';
 
 const DEFAULT_BOUNDING_BOX = {"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}};
 
@@ -48,8 +48,8 @@ export class BermaniaOpenstreetmap extends LitElement {
     return this._boundingBox || DEFAULT_BOUNDING_BOX;
   }
 
-  private _markers: LatitudeLongitudeModel[] = [];
-  set markers(markers: LatitudeLongitudeModel[]) {
+  private _markers: MarkerModel[] = [];
+  set markers(markers: MarkerModel[]) {
     markers = markers ?? [];
     if(sameMarkers(markers, this._markers)) {
       return;
@@ -141,11 +141,13 @@ export class BermaniaOpenstreetmap extends LitElement {
       const marker: Marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
       if(this._multiple) {
         // number the markers, so they can be matched with the list below the map
-        marker.bindTooltip(`${index + 1}`, { permanent: true, direction: 'top', offset: [0, -41] });
+        const label = document.createElement('span');
+        label.textContent = position.title ? `${index + 1}. ${position.title}` : `${index + 1}`;
+        marker.bindTooltip(label, { permanent: true, direction: 'top', offset: [0, -41] });
       }
       marker.on('dragend', () => {
         const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
-        this._markers = this._markers.map((existing, i) => i === index ? moved : existing);
+        this._markers = this._markers.map((existing, i) => i === index ? {...existing, ...moved} : existing);
         this.updateModel();
       });
       return marker;
@@ -160,7 +162,7 @@ export class BermaniaOpenstreetmap extends LitElement {
     this.dispatchEvent(new CustomEvent('mapdata-changed', {bubbles: true}))
   }
   private onMapClick(e: LeafletMouseEvent) {
-    const position: LatitudeLongitudeModel = {latitude: e.latlng.lat, longitude: e.latlng.lng};
+    const position: MarkerModel = {latitude: e.latlng.lat, longitude: e.latlng.lng};
     this._markers = this._multiple ? [...this._markers, position] : [position];
     this.renderMarkers();
     if(!this._multiple) {

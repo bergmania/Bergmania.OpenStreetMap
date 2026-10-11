@@ -29,7 +29,7 @@ namespace Bergmania.OpenStreetMap.Core
             // Extra markers stay stored when a data type is switched back to a single marker, but are not exposed.
             if (!configuration.AllowMultipleMarkers && model.Markers.Count > 1)
             {
-                model.Markers = new[] { model.Marker };
+                model.Markers = new[] { model.Markers[0] };
             }
 
             model.Configuration = configuration;

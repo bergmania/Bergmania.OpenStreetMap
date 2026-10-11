@@ -1,7 +1,7 @@
 export type OpenStreetMapModel = {
     zoom: number,
     marker: LatitudeLongitudeModel | null,
-    markers?: LatitudeLongitudeModel[],
+    markers?: MarkerModel[],
     boundingBox: BoundingBoxModel
 };
 
@@ -15,7 +15,13 @@ export type BoundingBoxModel = {
     southWestCorner: LatitudeLongitudeModel
 };
 
-export function sameMarkers(a: LatitudeLongitudeModel[], b: LatitudeLongitudeModel[]) {
+export type MarkerModel = LatitudeLongitudeModel & {
+    title?: string
+};
+
+export function sameMarkers(a: MarkerModel[], b: MarkerModel[]) {
     return a.length === b.length
-        && a.every((marker, i) => marker.latitude === b[i].latitude && marker.longitude === b[i].longitude);
+        && a.every((marker, i) => marker.latitude === b[i].latitude
+            && marker.longitude === b[i].longitude
+            && (marker.title ?? '') === (b[i].title ?? ''));
 }

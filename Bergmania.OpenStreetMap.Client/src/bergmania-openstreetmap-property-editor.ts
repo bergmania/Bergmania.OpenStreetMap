@@ -3,7 +3,7 @@ import {UmbChangeEvent} from '@umbraco-cms/backoffice/event';
 import {UmbElementMixin} from '@umbraco-cms/backoffice/element-api';
 import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/property-editor";
 import { UMB_CURRENT_USER_CONTEXT } from '@umbraco-cms/backoffice/current-user';
-import { BoundingBoxModel, LatitudeLongitudeModel, OpenStreetMapModel, sameMarkers } from "./models.ts";
+import { BoundingBoxModel, MarkerModel, OpenStreetMapModel, sameMarkers } from "./models.ts";
 import './auto-suggest.element.ts';
 import { UUIInputElement } from '@umbraco-cms/backoffice/external/uui';
 import './bergmania-openstreetmap.ts';               
@@ -64,7 +64,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     
 
     /** Everything stored on the value, including values saved before multiple markers were supported. */
-    private storedMarkers(): LatitudeLongitudeModel[] | undefined {
+    private storedMarkers(): MarkerModel[] | undefined {
         if (this.value?.markers?.length) {
             return this.value.markers;
         }
@@ -76,14 +76,14 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     /** The markers shown on the map: only the first one unless multiple markers are allowed. */
-    private get markers(): LatitudeLongitudeModel[] {
+    private get markers(): MarkerModel[] {
         const markers = this.storedMarkers()
             ?? this._defaultPosition?.markers
             ?? (this._defaultPosition?.marker ? [this._defaultPosition.marker] : []);
         return this._multiple ? markers : markers.slice(0, 1);
     }
 
-    private setMarkers(markers: LatitudeLongitudeModel[], boundingBox?: BoundingBoxModel) {
+    private setMarkers(markers: MarkerModel[], boundingBox?: BoundingBoxModel) {
         this.value = {
             ...this.value,
             zoom: this.value?.zoom ?? this._defaultPosition?.zoom,
@@ -91,9 +91,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
             marker: markers[0] ?? null,
             markers
         };
-        if (this._multiple) {
-            this.clearInputs();
-        } else {
+        if (!this._multiple) {
             this.inputLat = markers[0] ? ''+markers[0].latitude : '';
             this.inputLng = markers[0] ? ''+markers[0].longitude : '';
         }
@@ -101,8 +99,11 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
     /** Adds a marker when multiple markers are allowed, otherwise replaces the current one. */
-    private placeMarker(marker: LatitudeLongitudeModel, boundingBox: BoundingBoxModel) {
+    private placeMarker(marker: MarkerModel, boundingBox: BoundingBoxModel) {
         this.setMarkers(this._multiple ? [...this.markers, marker] : [marker], boundingBox);
+        if (this._multiple) {
+            this.clearInputs();
+        }
     }
 
     private clearInputs() {
@@ -177,8 +178,18 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         };
     }
 
-    private async copyCoordinates(marker: LatitudeLongitudeModel) {
+    private async copyCoordinates(marker: MarkerModel) {
         await navigator.clipboard.writeText(`${marker.latitude},${marker.longitude}`);
+    }
+
+    private setTitle(index: number, title: string) {
+        this.setMarkers(this.markers.map((marker, i) => {
+            if (i !== index) {
+                return marker;
+            }
+            const { title: _, ...position } = marker;
+            return title ? { ...position, title } : position;
+        }));
     }
 
     private removeMarker(index: number) {
@@ -247,12 +258,19 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     }
 
 
-    private renderMarkerList(markers: LatitudeLongitudeModel[]) {
+    private renderMarkerList(markers: MarkerModel[]) {
         return html`
             <div style="clear:both;">
                 ${markers.map((marker, index) => html`
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
                         <strong>${index + 1}.</strong>
+                        <uui-input
+                            label=${this.localize.term('osm_markerTitle')}
+                            placeholder=${this.localize.term('osm_markerTitle')}
+                            .value=${marker.title ?? ''}
+                            @input=${(e: InputEvent) => this.setTitle(index, (e.target as UUIInputElement).value as string)}
+                            style="flex:1;"
+                        ></uui-input>
                         ${
                             this._showCoordinates
                                 ? html`
@@ -262,9 +280,9 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                                     </span>
                                     <uui-button @click=${() => this.copyCoordinates(marker)} look="default" compact label="Copy coordinates"><umb-icon name="icon-documents"></umb-icon></uui-button>
                                 `
-                                : html`<umb-localize key="osm_marker"></umb-localize>`
+                                : ''
                         }
-                        <uui-button @click=${() => this.removeMarker(index)} look="default" compact label=${this.localize.term('osm_removeMarker')} style="margin-left:auto;"><umb-icon name="icon-trash"></umb-icon></uui-button>
+                        <uui-button @click=${() => this.removeMarker(index)} look="default" compact label=${this.localize.term('osm_removeMarker')}><umb-icon name="icon-trash"></umb-icon></uui-button>
                     </div>
                 `)}
                 ${
@@ -297,8 +315,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                 this._showSetMarkerByCoordinates 
                     ? html`
                         <div style="margin-bottom:10px;">
-                            <umb-localize key="osm_latitude"></umb-localize>: <uui-input label="Lat" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLat} id="inputLat" style="margin-right:10px;"></uui-input>
-                            <umb-localize key="osm_longitude"></umb-localize>: <uui-input label="Lng" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLng} id="inputLng"></uui-input>
+                            <umb-localize key="osm_latitude"></umb-localize>: <uui-input label="Lat" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLat ?? ''} id="inputLat" style="margin-right:10px;"></uui-input>
+                            <umb-localize key="osm_longitude"></umb-localize>: <uui-input label="Lng" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLng ?? ''} id="inputLng"></uui-input>
                             ${
                                 this._multiple
                                     ? html`<uui-button @click=${this.setMarker} look="secondary" label=${this.localize.term('osm_addMarker')} style="margin-left:10px;"></uui-button>`

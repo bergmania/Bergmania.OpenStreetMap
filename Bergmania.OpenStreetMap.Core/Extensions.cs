@@ -1,4 +1,5 @@
-﻿using Bergmania.OpenStreetMap.Core;
+﻿using System.Text.Encodings.Web;
+using Bergmania.OpenStreetMap.Core;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -17,7 +18,11 @@ namespace Umbraco.Extensions
                 tileLayerAttribution = model.Configuration?.TileLayerAttribution
             };
 
-            return new HtmlString(@$"<div data-openstreetmap='{JsonConvert.SerializeObject(model)}' data-openstreetmapdefaultconfig='{JsonConvert.SerializeObject(config)}' style='width: 100%; height: 400px;'></div>");
+            // Encoded, as marker titles are free text and would otherwise be able to break out of the attribute.
+            var data = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(model));
+            var defaultConfig = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(config));
+
+            return new HtmlString(@$"<div data-openstreetmap='{data}' data-openstreetmapdefaultconfig='{defaultConfig}' style='width: 100%; height: 400px;'></div>");
         }
         
         public static IHtmlContent LeafletScripts(this IHtmlHelper htmlHelper)
@@ -47,7 +52,13 @@ L.tileLayer(config.tileLayer, {
 let markers = data.markers && data.markers.length ? data.markers : (data.marker ? [data.marker] : []);
 
 markers.forEach(marker => {
-    L.marker(L.latLng(marker.latitude, marker.longitude), {draggable:false,}).addTo(map);
+    let leafletMarker = L.marker(L.latLng(marker.latitude, marker.longitude), {draggable:false, title: marker.title || '', alt: marker.title || 'Marker'}).addTo(map);
+    if(marker.title){
+        // set as text, so the title is never treated as HTML
+        let popup = document.createElement('span');
+        popup.textContent = marker.title;
+        leafletMarker.bindPopup(popup);
+    }
 });
 
     });

@@ -4,7 +4,7 @@ export default {
 		longitude: 'Longitude',
 		clear: 'Clear',
 		clearAll: 'Clear all markers',
-		marker: 'Marker',
+		markerTitle: 'Title',
 		addMarker: 'Add marker',
 		removeMarker: 'Remove marker',
 		searchPlaceholder: 'Type to search...'

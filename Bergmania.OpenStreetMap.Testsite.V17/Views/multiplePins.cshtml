@@ -13,22 +13,23 @@
 	return;
 }
 
-<h2>Markers (@map.Markers.Count)</h2>
+<h2>Locations (@map.Markers.Count)</h2>
+<p>@string.Join("; ", map.Markers.Select(marker => marker.Title).Where(title => !string.IsNullOrWhiteSpace(title)))</p>
 <ol>
 	@foreach (var marker in map.Markers)
 	{
-		<li>@marker.Latitude, @marker.Longitude</li>
+		<li><b>@(string.IsNullOrWhiteSpace(marker.Title) ? "Untitled" : marker.Title)</b> &ndash; @marker.Latitude, @marker.Longitude</li>
 	}
 </ol>
 <p><b>Zoom:</b> @map.Zoom</p>
 <p><b>Bounding box:</b> @map.BoundingBox.SouthWestCorner.Longitude, @map.BoundingBox.SouthWestCorner.Latitude, @map.BoundingBox.NorthEastCorner.Longitude, @map.BoundingBox.NorthEastCorner.Latitude</p>
 
 <h2>Leaflet rendering</h2>
-<p>All markers, in the view the editor saved. Markers outside that view are there, but you have to pan to them.</p>
+<p>All markers, in the view the editor saved. Markers outside that view are there, but you have to pan to them. Click a marker to see its title.</p>
 @map.LeafletRendering()
 
 <h2>Custom rendering, fitted to all markers</h2>
-<p>Built from <code>Model.Map.Markers</code>.</p>
+<p>Built from <code>Model.Map.Markers</code>, with each title shown next to its marker.</p>
 <div id="all-markers" style="width: 100%; height: 400px;"></div>
 
 <h2>Default rendering</h2>
@@ -38,7 +39,8 @@
 @Html.LeafletScripts()
 <script>
 	(function () {
-		const points = @Html.Raw(JsonSerializer.Serialize(map.Markers.Select(m => new[] { m.Latitude, m.Longitude })));
+		const locations = @Html.Raw(JsonSerializer.Serialize(map.Markers.Select(m => new { title = m.Title, point = new[] { m.Latitude, m.Longitude } })));
+		const points = locations.map(location => location.point);
 		const map = L.map('all-markers');
 
 		L.tileLayer('@map.Configuration.TileLayer', {
@@ -46,7 +48,12 @@
 			referrerPolicy: 'strict-origin-when-cross-origin'
 		}).addTo(map);
 
-		points.forEach((point, index) => L.marker(point).bindTooltip(`${index + 1}`, { permanent: true, direction: 'top', offset: [-15, -10] }).addTo(map));
+		locations.forEach((location, index) => {
+			// set as text, so the title is never treated as HTML
+			const label = document.createElement('span');
+			label.textContent = location.title || `${index + 1}`;
+			L.marker(location.point).bindTooltip(label, { permanent: true, direction: 'top', offset: [-15, -10] }).addTo(map);
+		});
 
 		if (points.length) {
 			map.fitBounds(L.latLngBounds(points), { paddingTopLeft: [40, 90], paddingBottomRight: [40, 20], maxZoom: 16 });

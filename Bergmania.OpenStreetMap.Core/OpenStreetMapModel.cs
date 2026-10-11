@@ -16,7 +16,7 @@ namespace Bergmania.OpenStreetMap.Core
         public int Zoom { get; set; }
         
         private LatitudeLongitudeModel _marker;
-        private IReadOnlyList<LatitudeLongitudeModel> _markers;
+        private IReadOnlyList<MarkerModel> _markers;
 
         /// <summary>
         /// The first marker. Falls back to the first of <see cref="Markers"/> when only those are stored.
@@ -32,7 +32,7 @@ namespace Bergmania.OpenStreetMap.Core
         /// All markers. Falls back to <see cref="Marker"/> for values saved before multiple markers were supported.
         /// </summary>
         [DataMember(Name = "markers")]
-        public IReadOnlyList<LatitudeLongitudeModel> Markers
+        public IReadOnlyList<MarkerModel> Markers
         {
             get
             {
@@ -41,7 +41,9 @@ namespace Bergmania.OpenStreetMap.Core
                     return _markers;
                 }
 
-                return _marker is null ? Array.Empty<LatitudeLongitudeModel>() : new[] { _marker };
+                return _marker is null
+                    ? Array.Empty<MarkerModel>()
+                    : new[] { new MarkerModel { Latitude = _marker.Latitude, Longitude = _marker.Longitude } };
             }
             set => _markers = value;
         }
@@ -101,5 +103,12 @@ namespace Bergmania.OpenStreetMap.Core
         
         [DataMember(Name = "longitude", IsRequired = true)]
         public decimal Longitude { get; set; }
+    }
+
+    [DataContract]
+    public class MarkerModel : LatitudeLongitudeModel
+    {
+        [DataMember(Name = "title")]
+        public string Title { get; set; }
     }
 }
