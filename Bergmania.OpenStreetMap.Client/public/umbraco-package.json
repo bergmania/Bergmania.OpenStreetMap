@@ -72,6 +72,12 @@
               "propertyEditorUiAlias": "Umb.PropertyEditorUi.Toggle"
             },
             {
+              "alias": "allowMultipleMarkers",
+              "label": "Allow Multiple Markers",
+              "description": "Allow placing more than one marker on the map.",
+              "propertyEditorUiAlias": "Umb.PropertyEditorUi.Toggle"
+            },
+            {
               "alias": "scrollWheelZoom",
               "label": "Scroll Wheel Zoom",
               "description": "Enable scroll wheel zoom in property editor?",

@@ -3,7 +3,7 @@ import {  Icon, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet
 
 // @ts-ignore
 import * as L from 'leaflet/dist/leaflet-src.esm.js';
-import { BoundingBoxModel, LatitudeLongitudeModel } from './models';
+import { BoundingBoxModel, LatitudeLongitudeModel, sameMarkers } from './models';
 
 const DEFAULT_BOUNDING_BOX = {"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}};
 
@@ -48,18 +48,33 @@ export class BermaniaOpenstreetmap extends LitElement {
     return this._boundingBox || DEFAULT_BOUNDING_BOX;
   }
 
-  private _markerLocation!:LatitudeLongitudeModel;
-  set markerLocation(location: LatitudeLongitudeModel) {
-    if(!location || location === this._markerLocation) {
+  private _markers: LatitudeLongitudeModel[] = [];
+  set markers(markers: LatitudeLongitudeModel[]) {
+    markers = markers ?? [];
+    if(sameMarkers(markers, this._markers)) {
       return;
     }
-    this._markerLocation = location;
+    this._markers = markers;
     if(this._map) {
-      this.updateMarker(location);
+      this.renderMarkers();
     }
   };
-  get markerLocation() {
-    return this._markerLocation;
+  get markers() {
+    return this._markers;
+  }
+
+  private _multiple: boolean = false;
+  set multiple(value: boolean) {
+    if(value === this._multiple) {
+      return;
+    }
+    this._multiple = value;
+    if(this._map) {
+      this.renderMarkers();
+    }
+  }
+  get multiple() {
+    return this._multiple;
   }
 
   private _zoom: number = 16;
@@ -77,7 +92,7 @@ export class BermaniaOpenstreetmap extends LitElement {
   tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors', referrerPolicy: 'strict-origin-when-cross-origin' };
 
   _map!: Map;
-  _marker?: Marker;
+  _leafletMarkers: Marker[] = [];
 
   async firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
@@ -103,7 +118,7 @@ export class BermaniaOpenstreetmap extends LitElement {
     //just disabling right-click
     this._map.on('contextmenu', () => {});
 
-    this.updateMarker(this.markerLocation, true);
+    this.renderMarkers();
   }
 
   private fitBounds(boundingBox: BoundingBoxModel) {
@@ -120,29 +135,20 @@ export class BermaniaOpenstreetmap extends LitElement {
     return L.tileLayer(tileLayePath || DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
-  private clearMarker() {
-    this._marker?.remove();
-    this._marker = undefined;
-  }
-
-  private updateMarker(position: LatitudeLongitudeModel, first?: boolean) {
-    if(this._marker) {
-      this.clearMarker();
-    }
-    if(position){
-      this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
-      this._markerLocation = position;
-    }
-
-    if(!first) {
-      if(position) {
-        this._map.setView(L.latLng(position.latitude, position.longitude));
+  private renderMarkers() {
+    this._leafletMarkers.forEach(marker => marker.remove());
+    this._leafletMarkers = this._markers.map((position, index) => {
+      const marker: Marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
+      if(this._multiple) {
+        // number the markers, so they can be matched with the list below the map
+        marker.bindTooltip(`${index + 1}`, { permanent: true, direction: 'top', offset: [0, -41] });
       }
-      this.updateModel();
-    }
-    this._marker?.on('dragend', () => {
-      this._markerLocation = {latitude: this._marker!.getLatLng().lat, longitude: this._marker!.getLatLng().lng};
-      this.updateModel()
+      marker.on('dragend', () => {
+        const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
+        this._markers = this._markers.map((existing, i) => i === index ? moved : existing);
+        this.updateModel();
+      });
+      return marker;
     });
   }
 
@@ -154,7 +160,13 @@ export class BermaniaOpenstreetmap extends LitElement {
     this.dispatchEvent(new CustomEvent('mapdata-changed', {bubbles: true}))
   }
   private onMapClick(e: LeafletMouseEvent) {
-    this.updateMarker({latitude:e.latlng.lat, longitude: e.latlng.lng} as LatitudeLongitudeModel);
+    const position: LatitudeLongitudeModel = {latitude: e.latlng.lat, longitude: e.latlng.lng};
+    this._markers = this._multiple ? [...this._markers, position] : [position];
+    this.renderMarkers();
+    if(!this._multiple) {
+      this._map.setView(e.latlng);
+    }
+    this.updateModel();
   }
   private onMoveEnd() {
     this._boundingBox = {
