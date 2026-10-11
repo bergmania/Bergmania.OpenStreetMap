@@ -10,7 +10,14 @@ namespace Umbraco.Extensions
     {
         public static IHtmlContent LeafletRendering(this OpenStreetMapModel model)
         {
-            return new HtmlString(@$"<div data-openstreetmap='{JsonConvert.SerializeObject(model)}' data-openstreetmapdefaultconfig='{JsonConvert.SerializeObject(model.Configuration)}' style='width: 100%; height: 400px;'></div>");
+            // The configuration has no data members, so it serializes to an empty object on its own.
+            var config = new
+            {
+                tileLayer = model.Configuration?.TileLayer,
+                tileLayerAttribution = model.Configuration?.TileLayerAttribution
+            };
+
+            return new HtmlString(@$"<div data-openstreetmap='{JsonConvert.SerializeObject(model)}' data-openstreetmapdefaultconfig='{JsonConvert.SerializeObject(config)}' style='width: 100%; height: 400px;'></div>");
         }
         
         public static IHtmlContent LeafletScripts(this IHtmlHelper htmlHelper)
