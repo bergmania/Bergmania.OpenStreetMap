@@ -235,6 +235,10 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
     private async getUserLanguage() {
         return new Promise(res => {
             this.getContext(UMB_CURRENT_USER_CONTEXT).then(userContext => {
+                if (!userContext) {
+                    res(undefined);
+                    return;
+                }
                 this.observe(userContext.currentUser, user => {
                     res(user?.languageIsoCode);
                 })
