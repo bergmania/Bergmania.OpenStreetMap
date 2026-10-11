@@ -37,9 +37,11 @@ L.tileLayer(config.tileLayer, {
     referrerPolicy: 'strict-origin-when-cross-origin'
 }).addTo(map);
 
-if(data.marker){
-    L.marker(L.latLng(data.marker.latitude, data.marker.longitude), {draggable:false,}).addTo(map);
-}
+let markers = data.markers && data.markers.length ? data.markers : (data.marker ? [data.marker] : []);
+
+markers.forEach(marker => {
+    L.marker(L.latLng(marker.latitude, marker.longitude), {draggable:false,}).addTo(map);
+});
 
     });
 </script>");

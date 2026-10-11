@@ -26,6 +26,12 @@ namespace Bergmania.OpenStreetMap.Core
             
             var model = string.IsNullOrWhiteSpace(inter?.ToString()) ? configuration.DefaultPosition : _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
 
+            // Extra markers stay stored when a data type is switched back to a single marker, but are not exposed.
+            if (!configuration.AllowMultipleMarkers && model.Markers.Count > 1)
+            {
+                model.Markers = new[] { model.Marker };
+            }
+
             model.Configuration = configuration;
             return model;
         }

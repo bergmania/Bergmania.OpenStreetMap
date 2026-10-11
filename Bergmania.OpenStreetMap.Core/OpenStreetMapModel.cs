@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
@@ -13,8 +15,36 @@ namespace Bergmania.OpenStreetMap.Core
         [DataMember(Name = "zoom", IsRequired = true)]
         public int Zoom { get; set; }
         
+        private LatitudeLongitudeModel _marker;
+        private IReadOnlyList<LatitudeLongitudeModel> _markers;
+
+        /// <summary>
+        /// The first marker. Falls back to the first of <see cref="Markers"/> when only those are stored.
+        /// </summary>
         [DataMember(Name = "marker")]
-        public LatitudeLongitudeModel Marker { get; set; }
+        public LatitudeLongitudeModel Marker
+        {
+            get => _marker ?? _markers?.FirstOrDefault();
+            set => _marker = value;
+        }
+
+        /// <summary>
+        /// All markers. Falls back to <see cref="Marker"/> for values saved before multiple markers were supported.
+        /// </summary>
+        [DataMember(Name = "markers")]
+        public IReadOnlyList<LatitudeLongitudeModel> Markers
+        {
+            get
+            {
+                if (_markers is { Count: > 0 })
+                {
+                    return _markers;
+                }
+
+                return _marker is null ? Array.Empty<LatitudeLongitudeModel>() : new[] { _marker };
+            }
+            set => _markers = value;
+        }
         
         [DataMember(Name = "boundingBox", IsRequired = true)]
         public BoundingBoxModel BoundingBox { get; set; }
