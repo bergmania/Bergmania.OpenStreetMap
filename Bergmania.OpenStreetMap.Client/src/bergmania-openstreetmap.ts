@@ -94,7 +94,7 @@ export class BermaniaOpenstreetmap extends LitElement {
   _map!: Map;
   _leafletMarkers: Marker[] = [];
 
-  async firstUpdated(_changedProperties: any) {
+  firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
 
     const mapDomElement = this.renderRoot.querySelector('.map') as HTMLElement;
