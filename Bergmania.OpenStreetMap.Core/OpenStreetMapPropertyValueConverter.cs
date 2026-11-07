@@ -27,9 +27,15 @@ namespace Bergmania.OpenStreetMap.Core
             var isEmpty = string.IsNullOrWhiteSpace(inter?.ToString());
             var model = isEmpty ? configuration.DefaultPosition : _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
 
+            // No default position configured, or a stored value that deserializes to null.
+            if (model is null)
+            {
+                return null;
+            }
+
             // With multiple markers, content without a value has no markers; the default position only sets the zoom and area.
             // A new model, as the default position is shared by every property using this data type.
-            if (isEmpty && configuration.AllowMultipleMarkers && model is not null)
+            if (isEmpty && configuration.AllowMultipleMarkers)
             {
                 model = new OpenStreetMapModel { Zoom = model.Zoom, BoundingBox = model.BoundingBox };
             }
