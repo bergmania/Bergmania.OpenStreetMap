@@ -57,7 +57,7 @@ Bergmania.OpenStreetMap/               # Main NuGet package (bundles Core + Stat
 
 ## Key Technologies
 
-- **Backend**: .NET 10, Umbraco 17+ (supports 17-20)
+- **Backend**: .NET 10, Umbraco 17 and 18
 - **Frontend**: TypeScript, Lit 3, Leaflet, Vite
 - **Umbraco Integration**: `@umbraco-cms/backoffice` for UI components and APIs
 

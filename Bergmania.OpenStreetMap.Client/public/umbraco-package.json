@@ -1,7 +1,7 @@
 {
   "$schema": "../Bergmania.OpenStreetMap.Testsite.V14/umbraco-package-schema.json",
   "name": "Bergmania Open Street Map",
-  "version": "6.0.0",
+  "version": "9.0.0",
   "extensions": [
     {
       "type": "propertyEditorUi",
