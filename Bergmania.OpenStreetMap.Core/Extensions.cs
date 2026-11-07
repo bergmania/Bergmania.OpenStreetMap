@@ -61,6 +61,13 @@ markers.forEach(marker => {
     }
 });
 
+// The saved bounding box is wherever the editor left the map, so widen it to keep every marker in view.
+if(markers.length > 1){
+    let bounds = map.getBounds();
+    markers.forEach(marker => bounds.extend(L.latLng(marker.latitude, marker.longitude)));
+    map.fitBounds(bounds, {padding: [30, 30]});
+}
+
     });
 </script>");
         }
