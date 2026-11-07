@@ -1,5 +1,5 @@
 # Bergmania.OpenStreetMap [![NuGet](https://img.shields.io/nuget/v/Bergmania.OpenStreetMap.svg?style=modern&label=nuget)](https://www.nuget.org/packages/Bergmania.OpenStreetMap)
-OpenStreetMaps property editor for Umbraco 17 and 18 including property value converter.
+OpenStreetMaps property editor for Umbraco 17+ including property value converter.
 
 ## Features
 - Click on exact location on map to place marker
@@ -32,14 +32,14 @@ If a Data Type is switched back to a single marker, the extra markers stay store
 
 With the Content Delivery API, the property value includes a `markers` array next to `marker`, and each marker can have a `title`.
 
-## Upgrading to 9.0.0
-Version 9 adds multiple markers. Existing Data Types, content and templates keep working without changes, but note:
+## Upgrading to 8.1.0
+Version 8.1 adds multiple markers. Existing Data Types, content and templates keep working without changes, but note:
 
-- **Version 9 supports Umbraco 17 and 18.** Version 8 allowed installing on Umbraco 17 to 20, but 19 and 20 were never tested, so version 9 can't be installed on them yet.
 - **Stored values gain a `markers` field.** Values saved by older versions are read as a single marker.
 - **Downgrading is not safe once editors have saved more than one marker.** Older versions keep only the first marker the next time the map is edited. For the same reason, editors should hard refresh the backoffice after upgrading, so that a cached copy of the old editor is not used.
 - **Code that writes map values** (imports, migrations, custom code) should set both `marker` and `markers`. When both are present, `markers` is used.
-- **`LeafletRendering()` works again and uses the tile layer and attribution configured on the Data Type.** In 8.x the Data Type settings were not passed to the map, so the Leaflet script failed before adding the marker.
+- **`LeafletRendering()` works again and uses the tile layer and attribution configured on the Data Type.** In 8.0 the Data Type settings were not passed to the map, so the Leaflet script failed before adding the marker.
+- **Content without a value no longer throws when the Data Type has no default position.** The model then has no markers and shows the area the backoffice map starts on.
 - **`LeafletRendering()` now HTML-encodes its `data-openstreetmap` attributes.** Scripts reading them with `getAttribute` are not affected.
 
 ## Test site
