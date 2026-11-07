@@ -90,9 +90,9 @@ export class AutoSuggestElement extends LitElement {
 
     }
 
-    async getSuggestion(term: string): Promise<any[]> {
+    getSuggestion(term: string): Promise<any[]> {
         console.warn('You need to implement your own getSuggestion method. Searching for: '+term);
-        return [];
+        return Promise.resolve([]);
     }
 
     reset() { 
