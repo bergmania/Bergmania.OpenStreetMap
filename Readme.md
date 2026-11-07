@@ -35,6 +35,7 @@ With the Content Delivery API, the property value includes a `markers` array nex
 ## Upgrading to 9.0.0
 Version 9 adds multiple markers. Existing Data Types, content and templates keep working without changes, but note:
 
+- **Version 9 supports Umbraco 17 and 18.** Version 8 allowed installing on Umbraco 17 to 20, but 19 and 20 were never tested, so version 9 can't be installed on them yet.
 - **Stored values gain a `markers` field.** Values saved by older versions are read as a single marker.
 - **Downgrading is not safe once editors have saved more than one marker.** Older versions keep only the first marker the next time the map is edited. For the same reason, editors should hard refresh the backoffice after upgrading, so that a cached copy of the old editor is not used.
 - **Code that writes map values** (imports, migrations, custom code) should set both `marker` and `markers`. When both are present, `markers` is used.
