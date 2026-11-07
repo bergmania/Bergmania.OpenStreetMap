@@ -1,5 +1,5 @@
 import { css, html, LitElement, customElement } from '@umbraco-cms/backoffice/external/lit';
-import {  Icon, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
+import {  Icon, LatLng, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
 
 // @ts-ignore
 import * as L from 'leaflet/dist/leaflet-src.esm.js';
@@ -135,23 +135,58 @@ export class BermaniaOpenstreetmap extends LitElement {
     return L.tileLayer(tileLayePath || DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
+  /**
+   * Updates the Leaflet markers in place, reusing them by their place in the list, so typing a title
+   * only changes that marker's label instead of recreating every marker.
+   */
   private renderMarkers() {
-    this._leafletMarkers.forEach(marker => marker.remove());
-    this._leafletMarkers = this._markers.map((position, index) => {
-      const marker: Marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
-      if(this._multiple) {
-        // number the markers, so they can be matched with the list below the map
-        const label = document.createElement('span');
-        label.textContent = position.title ? `${index + 1}. ${position.title}` : `${index + 1}`;
-        marker.bindTooltip(label, { permanent: true, direction: 'top', offset: [0, -41] });
+    while(this._leafletMarkers.length > this._markers.length) {
+      this._leafletMarkers.pop()!.remove();
+    }
+    this._markers.forEach((position, index) => {
+      const latLng = L.latLng(position.latitude, position.longitude);
+      let marker = this._leafletMarkers[index];
+      if(!marker) {
+        marker = this.createMarker(latLng, index);
+        this._leafletMarkers.push(marker);
+      } else if(!marker.getLatLng().equals(latLng)) {
+        marker.setLatLng(latLng);
       }
-      marker.on('dragend', () => {
-        const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
-        this._markers = this._markers.map((existing, i) => i === index ? {...existing, ...moved} : existing);
-        this.updateModel();
-      });
-      return marker;
+      this.renderLabel(marker, position, index);
     });
+  }
+
+  private createMarker(latLng: LatLng, index: number) {
+    const marker: Marker = L.marker(latLng, { draggable: true, icon: ICON }).addTo(this._map);
+    // Markers are only removed from the end of the list, so a marker keeps its index.
+    marker.on('dragend', () => {
+      const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
+      this._markers = this._markers.map((existing, i) => i === index ? {...existing, ...moved} : existing);
+      this.updateModel();
+    });
+    return marker;
+  }
+
+  /** Numbers the markers when there can be several, so they can be matched with the list below the map. */
+  private renderLabel(marker: Marker, position: MarkerModel, index: number) {
+    if(!this._multiple) {
+      marker.unbindTooltip();
+      return;
+    }
+    const text = position.title ? `${index + 1}. ${position.title}` : `${index + 1}`;
+    const tooltip = marker.getTooltip();
+    const current = tooltip?.getContent();
+    if(current instanceof HTMLElement && current.textContent === text) {
+      return;
+    }
+    // set as text, so the title is never treated as HTML
+    const label = document.createElement('span');
+    label.textContent = text;
+    if(tooltip) {
+      marker.setTooltipContent(label);
+    } else {
+      marker.bindTooltip(label, { permanent: true, direction: 'top', offset: [0, -41] });
+    }
   }
 
   private setZoom(level:number) {
