@@ -75,12 +75,19 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         return this.value?.marker === null || this.value?.markers ? [] : undefined;
     }
 
-    /** The markers shown on the map: only the first one unless multiple markers are allowed. */
+    /**
+     * The markers shown on the map: only the first one unless multiple markers are allowed.
+     * With multiple markers, new content starts empty; the default position only sets the zoom and area.
+     */
     private get markers(): MarkerModel[] {
-        const markers = this.storedMarkers()
+        const stored = this.storedMarkers();
+        if (this._multiple) {
+            return stored ?? [];
+        }
+        const markers = stored
             ?? this._defaultPosition?.markers
             ?? (this._defaultPosition?.marker ? [this._defaultPosition.marker] : []);
-        return this._multiple ? markers : markers.slice(0, 1);
+        return markers.slice(0, 1);
     }
 
     private setMarkers(markers: MarkerModel[], boundingBox?: BoundingBoxModel) {
@@ -279,7 +286,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                                     <span class="marker-coordinate">
                                         <umb-localize key="osm_longitude"></umb-localize>: ${marker.longitude}
                                     </span>
-                                    <uui-button @click=${() => this.copyCoordinates(marker)} look="default" compact label="Copy coordinates"><umb-icon name="icon-documents"></umb-icon></uui-button>
+                                    <uui-button @click=${() => this.copyCoordinates(marker)} look="default" compact label=${this.localize.term('osm_copyCoordinates')}><umb-icon name="icon-documents"></umb-icon></uui-button>
                                 `
                                 : ''
                         }
@@ -374,9 +381,9 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                     this._showSetMarkerByCoordinates
                         ? html`
                             <label for="inputLat"><umb-localize key="osm_latitude"></umb-localize>:</label>
-                            <uui-input label="Lat" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLat ?? ''} id="inputLat"></uui-input>
+                            <uui-input label=${this.localize.term('osm_latitude')} @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLat ?? ''} id="inputLat"></uui-input>
                             <label for="inputLng"><umb-localize key="osm_longitude"></umb-localize>:</label>
-                            <uui-input label="Lng" @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLng ?? ''} id="inputLng"></uui-input>
+                            <uui-input label=${this.localize.term('osm_longitude')} @change=${this._multiple ? null : this.setMarker} @paste=${this.handlePaste} .value=${this.inputLng ?? ''} id="inputLng"></uui-input>
                             ${
                                 this._multiple
                                     ? html`<uui-button @click=${this.setMarker} look="secondary" label=${this.localize.term('osm_addMarker')}></uui-button>`
@@ -416,8 +423,8 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                             <div style="clear:both;">
                                 <umb-localize key="osm_latitude"></umb-localize>: ${markers[0].latitude},
                                 <umb-localize key="osm_longitude"></umb-localize>: ${markers[0].longitude}
-                                <uui-button @click=${() => this.copyCoordinates(markers[0])} look="default" compact label="Copy coordinates"><umb-icon name="icon-documents"></umb-icon></uui-button>
-                                <uui-button @click=${this.clearMarker} look="default" compact label="Clear marker" style="float:right;"><umb-icon name="icon-trash"></umb-icon></uui-button>
+                                <uui-button @click=${() => this.copyCoordinates(markers[0])} look="default" compact label=${this.localize.term('osm_copyCoordinates')}><umb-icon name="icon-documents"></umb-icon></uui-button>
+                                <uui-button @click=${this.clearMarker} look="default" compact label=${this.localize.term('osm_clearMarker')} style="float:right;"><umb-icon name="icon-trash"></umb-icon></uui-button>
                             </div>
                         `
                         : ''

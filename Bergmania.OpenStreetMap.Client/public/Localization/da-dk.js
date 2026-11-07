@@ -7,6 +7,8 @@ export default {
 		markerTitle: 'Titel',
 		addMarker: 'Tilføj markør',
 		removeMarker: 'Fjern markør',
+		copyCoordinates: 'Kopiér koordinater',
+		clearMarker: 'Ryd markør',
 		searchPlaceholder: 'Skriv for at søge...'
 	}
 };

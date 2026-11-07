@@ -7,6 +7,8 @@ export default {
 		markerTitle: 'Title',
 		addMarker: 'Add marker',
 		removeMarker: 'Remove marker',
+		copyCoordinates: 'Copy coordinates',
+		clearMarker: 'Clear marker',
 		searchPlaceholder: 'Type to search...'
 	}
 };

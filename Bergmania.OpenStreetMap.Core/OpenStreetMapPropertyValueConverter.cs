@@ -24,7 +24,15 @@ namespace Bergmania.OpenStreetMap.Core
         {
             var configuration = propertyType.DataType.ConfigurationAs<OpenStreetMapConfiguration>();
             
-            var model = string.IsNullOrWhiteSpace(inter?.ToString()) ? configuration.DefaultPosition : _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
+            var isEmpty = string.IsNullOrWhiteSpace(inter?.ToString());
+            var model = isEmpty ? configuration.DefaultPosition : _jsonSerializer.Deserialize<OpenStreetMapModel>(inter.ToString());
+
+            // With multiple markers, content without a value has no markers; the default position only sets the zoom and area.
+            // A new model, as the default position is shared by every property using this data type.
+            if (isEmpty && configuration.AllowMultipleMarkers && model is not null)
+            {
+                model = new OpenStreetMapModel { Zoom = model.Zoom, BoundingBox = model.BoundingBox };
+            }
 
             // Extra markers stay stored when a data type is switched back to a single marker, but are not exposed.
             if (!configuration.AllowMultipleMarkers && model.Markers.Count > 1)
