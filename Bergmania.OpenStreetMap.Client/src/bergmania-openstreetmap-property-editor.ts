@@ -233,7 +233,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
 
     async getSuggestion(term: string) {
         const limit = 5;
-        const language = await this.getUserLanguage();
+        const language = await this.getUserLanguage() as string | undefined;
         const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=${limit}&q=${encodeURIComponent(term)}&accept-language=${encodeURIComponent(language ?? '')}`;
 
         return fetch(api).then(res=>res.json()).then(results => {
