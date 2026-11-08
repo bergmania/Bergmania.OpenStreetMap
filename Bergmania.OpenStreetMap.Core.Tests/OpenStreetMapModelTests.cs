@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.IO;
 using System.Text.Encodings.Web;
 using Bergmania.OpenStreetMap.Core;
 

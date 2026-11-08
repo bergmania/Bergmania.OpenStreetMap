@@ -18,6 +18,7 @@ public class LeafletRenderingTests
         var html = model.LeafletRendering().ToString()!;
 
         await Assert.That(html).DoesNotContain("<script>");
+        await Assert.That(html).Contains("&lt;script&gt;");
         await Assert.That(html).Contains("data-openstreetmap=");
         await Assert.That(html).Contains("data-openstreetmapdefaultconfig=");
     }
