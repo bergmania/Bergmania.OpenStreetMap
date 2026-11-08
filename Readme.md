@@ -60,3 +60,4 @@ Thanks for the contributions
 - [Arjan](https://github.com/creativesuspects)
 - [Yevhen Duyun](https://github.com/duyun-yevhen)
 - [David Thibault](https://github.com/leddt)
+- [Alec Steene](https://github.com/asteene)
