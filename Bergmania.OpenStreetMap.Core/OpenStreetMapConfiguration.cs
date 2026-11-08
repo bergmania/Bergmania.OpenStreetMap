@@ -21,6 +21,9 @@ public class OpenStreetMapConfiguration
     [ConfigurationField("allowClear")] 
     public bool AllowClear { get; set; } = true;
 
+    [ConfigurationField("allowMultipleMarkers")]
+    public bool AllowMultipleMarkers { get; set; } = false;
+
     [ConfigurationField("scrollWheelZoom")]
     public bool ScrollWheelZoom { get; set; } = true;
 

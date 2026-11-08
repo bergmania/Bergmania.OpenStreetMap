@@ -18,4 +18,5 @@
   <Project Path="Bergmania.OpenStreetMap.Testsite.V17/Bergmania.OpenStreetMap.Testsite.V17.csproj" />
   <Project Path="Bergmania.OpenStreetMap/Bergmania.OpenStreetMap.csproj" />
   <Project Path="Bergmania.OpenStreetMap.Client/Bergmania.OpenStreetMap.Client.esproj" />
+  <Project Path="Bergmania.OpenStreetMap.Core.Tests/Bergmania.OpenStreetMap.Core.Tests.csproj" />
 </Solution>

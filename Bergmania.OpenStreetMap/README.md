@@ -5,6 +5,7 @@ The package contains the following:
   - Using OpenStreetMap
   - Allow searching for locations
   - Persists the marker position
+  - Optionally allows multiple markers, each with an optional title
   - Persists the bounding box
   - Persists the zoom level
 - Property Value Converter

@@ -1,4 +1,5 @@
-﻿using Bergmania.OpenStreetMap.Core;
+﻿using System.Text.Encodings.Web;
+using Bergmania.OpenStreetMap.Core;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -8,16 +9,28 @@ namespace Umbraco.Extensions
 {
     public static class OpenStreetMapExtensions
     {
+        private const string DefaultTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        private const string DefaultAttribution = "Map data © OpenStreetMap contributors";
+
         public static IHtmlContent LeafletRendering(this OpenStreetMapModel model)
         {
-            return new HtmlString(@$"<div data-openstreetmap='{JsonConvert.SerializeObject(model)}' data-openstreetmapdefaultconfig='{JsonConvert.SerializeObject(model.Configuration)}' style='width: 100%; height: 400px;'></div>");
+            var config = new
+            {
+                tileLayer = model.Configuration?.TileLayer ?? DefaultTileLayer,
+                tileLayerAttribution = model.Configuration?.TileLayerAttribution ?? DefaultAttribution
+            };
+
+            var data = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(model));
+            var defaultConfig = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(config));
+
+            return new HtmlString($"<div data-openstreetmap=\"{data}\" data-openstreetmapdefaultconfig=\"{defaultConfig}\" style=\"width: 100%; height: 400px;\"></div>");
         }
         
         public static IHtmlContent LeafletScripts(this IHtmlHelper htmlHelper)
         {
             return new HtmlString(@"
-<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' />
-<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>
+<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' integrity='sha256-BPfK9M5v34c2XP6p0cxVz1mUQLst0gTLk0mlc7kuodA=' crossorigin='anonymous' />
+<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js' integrity='sha256-yDc0eil8GjWFKqN1OSzHSVCiuGghTosZCcRje4tj7iQ=' crossorigin='anonymous'></script>
 <script>
 
 let elements = document.querySelectorAll('[data-openstreetmap]');
@@ -37,8 +50,23 @@ L.tileLayer(config.tileLayer, {
     referrerPolicy: 'strict-origin-when-cross-origin'
 }).addTo(map);
 
-if(data.marker){
-    L.marker(L.latLng(data.marker.latitude, data.marker.longitude), {draggable:false,}).addTo(map);
+let markers = data.markers && data.markers.length ? data.markers : (data.marker ? [data.marker] : []);
+
+markers.forEach(marker => {
+    let leafletMarker = L.marker(L.latLng(marker.latitude, marker.longitude), {draggable:false, title: marker.title || '', alt: marker.title || 'Marker'}).addTo(map);
+    if(marker.title){
+        // set as text, so the title is never treated as HTML
+        let popup = document.createElement('span');
+        popup.textContent = marker.title;
+        leafletMarker.bindPopup(popup);
+    }
+});
+
+// The saved bounding box is wherever the editor left the map, so widen it to keep every marker in view.
+if(markers.length > 1){
+    let bounds = map.getBounds();
+    markers.forEach(marker => bounds.extend(L.latLng(marker.latitude, marker.longitude)));
+    map.fitBounds(bounds, {padding: [30, 30]});
 }
 
     });

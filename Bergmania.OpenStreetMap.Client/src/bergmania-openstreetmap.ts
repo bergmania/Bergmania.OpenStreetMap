@@ -1,9 +1,9 @@
 import { css, html, LitElement, customElement } from '@umbraco-cms/backoffice/external/lit';
-import {  Icon, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
+import {  Icon, LatLng, LeafletMouseEvent, Map, Marker, TileLayerOptions } from 'leaflet';
 
 // @ts-ignore
 import * as L from 'leaflet/dist/leaflet-src.esm.js';
-import { BoundingBoxModel, LatitudeLongitudeModel } from './models';
+import { BoundingBoxModel, MarkerModel, sameMarkers } from './models';
 
 const DEFAULT_BOUNDING_BOX = {"southWestCorner":{"latitude":54.970495269313204,"longitude":-1.6278648376464846},"northEastCorner":{"latitude":54.97911600936982,"longitude":-1.609625816345215}};
 
@@ -48,18 +48,33 @@ export class BermaniaOpenstreetmap extends LitElement {
     return this._boundingBox || DEFAULT_BOUNDING_BOX;
   }
 
-  private _markerLocation!:LatitudeLongitudeModel;
-  set markerLocation(location: LatitudeLongitudeModel) {
-    if(!location || location === this._markerLocation) {
+  private _markers: MarkerModel[] = [];
+  set markers(markers: MarkerModel[]) {
+    markers = markers ?? [];
+    if(sameMarkers(markers, this._markers)) {
       return;
     }
-    this._markerLocation = location;
+    this._markers = markers;
     if(this._map) {
-      this.updateMarker(location);
+      this.renderMarkers();
     }
   };
-  get markerLocation() {
-    return this._markerLocation;
+  get markers() {
+    return this._markers;
+  }
+
+  private _multiple: boolean = false;
+  set multiple(value: boolean) {
+    if(value === this._multiple) {
+      return;
+    }
+    this._multiple = value;
+    if(this._map) {
+      this.renderMarkers();
+    }
+  }
+  get multiple() {
+    return this._multiple;
   }
 
   private _zoom: number = 16;
@@ -77,9 +92,9 @@ export class BermaniaOpenstreetmap extends LitElement {
   tileLayerOptions: any = { attribution: 'Map data © OpenStreetMap contributors', referrerPolicy: 'strict-origin-when-cross-origin' };
 
   _map!: Map;
-  _marker?: Marker;
+  _leafletMarkers: Marker[] = [];
 
-  async firstUpdated(_changedProperties: any) {
+  firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
 
     const mapDomElement = this.renderRoot.querySelector('.map') as HTMLElement;
@@ -103,7 +118,7 @@ export class BermaniaOpenstreetmap extends LitElement {
     //just disabling right-click
     this._map.on('contextmenu', () => {});
 
-    this.updateMarker(this.markerLocation, true);
+    this.renderMarkers();
   }
 
   private fitBounds(boundingBox: BoundingBoxModel) {
@@ -120,30 +135,59 @@ export class BermaniaOpenstreetmap extends LitElement {
     return L.tileLayer(tileLayePath || DEFAULT_TILELAYER, tileLayerOptions).addTo(this._map);
   }
 
-  private clearMarker() {
-    this._marker?.remove();
-    this._marker = undefined;
+  /**
+   * Updates the Leaflet markers in place, reusing them by their place in the list, so typing a title
+   * only changes that marker's label instead of recreating every marker.
+   */
+  private renderMarkers() {
+    while(this._leafletMarkers.length > this._markers.length) {
+      this._leafletMarkers.pop()!.remove();
+    }
+    this._markers.forEach((position, index) => {
+      const latLng = L.latLng(position.latitude, position.longitude);
+      let marker = this._leafletMarkers[index];
+      if(!marker) {
+        marker = this.createMarker(latLng, index);
+        this._leafletMarkers.push(marker);
+      } else if(!marker.getLatLng().equals(latLng)) {
+        marker.setLatLng(latLng);
+      }
+      this.renderLabel(marker, position, index);
+    });
   }
 
-  private updateMarker(position: LatitudeLongitudeModel, first?: boolean) {
-    if(this._marker) {
-      this.clearMarker();
-    }
-    if(position){
-      this._marker = L.marker(L.latLng(position.latitude, position.longitude), { draggable: true, icon: ICON }).addTo(this._map);
-      this._markerLocation = position;
-    }
-
-    if(!first) {
-      if(position) {
-        this._map.setView(L.latLng(position.latitude, position.longitude));
-      }
+  private createMarker(latLng: LatLng, _index: number) {
+    const marker: Marker = L.marker(latLng, { draggable: true, icon: ICON }).addTo(this._map);
+    marker.on('dragend', () => {
+      const currentIndex = this._leafletMarkers.indexOf(marker);
+      if (currentIndex < 0) return;
+      const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
+      this._markers = this._markers.map((existing, i) => i === currentIndex ? {...existing, ...moved} : existing);
       this.updateModel();
-    }
-    this._marker?.on('dragend', () => {
-      this._markerLocation = {latitude: this._marker!.getLatLng().lat, longitude: this._marker!.getLatLng().lng};
-      this.updateModel()
     });
+    return marker;
+  }
+
+  /** Numbers the markers when there can be several, so they can be matched with the list below the map. */
+  private renderLabel(marker: Marker, position: MarkerModel, index: number) {
+    if(!this._multiple) {
+      marker.unbindTooltip();
+      return;
+    }
+    const text = position.title ? `${index + 1}. ${position.title}` : `${index + 1}`;
+    const tooltip = marker.getTooltip();
+    const current = tooltip?.getContent();
+    if(current instanceof HTMLElement && current.textContent === text) {
+      return;
+    }
+    // set as text, so the title is never treated as HTML
+    const label = document.createElement('span');
+    label.textContent = text;
+    if(tooltip) {
+      marker.setTooltipContent(label);
+    } else {
+      marker.bindTooltip(label, { permanent: true, direction: 'top', offset: [0, -41] });
+    }
   }
 
   private setZoom(level:number) {
@@ -154,7 +198,13 @@ export class BermaniaOpenstreetmap extends LitElement {
     this.dispatchEvent(new CustomEvent('mapdata-changed', {bubbles: true}))
   }
   private onMapClick(e: LeafletMouseEvent) {
-    this.updateMarker({latitude:e.latlng.lat, longitude: e.latlng.lng} as LatitudeLongitudeModel);
+    const position: MarkerModel = {latitude: e.latlng.lat, longitude: e.latlng.lng};
+    this._markers = this._multiple ? [...this._markers, position] : [position];
+    this.renderMarkers();
+    if(!this._multiple) {
+      this._map.setView(e.latlng);
+    }
+    this.updateModel();
   }
   private onMoveEnd() {
     this._boundingBox = {

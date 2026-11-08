@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
@@ -13,8 +15,40 @@ namespace Bergmania.OpenStreetMap.Core
         [DataMember(Name = "zoom", IsRequired = true)]
         public int Zoom { get; set; }
         
+        private LatitudeLongitudeModel _marker;
+        private IReadOnlyList<MarkerModel> _markers;
+        private IReadOnlyList<MarkerModel> _markerFallback;
+
+        /// <summary>
+        /// The first marker. Falls back to the first of <see cref="Markers"/> when only those are stored.
+        /// </summary>
         [DataMember(Name = "marker")]
-        public LatitudeLongitudeModel Marker { get; set; }
+        public LatitudeLongitudeModel Marker
+        {
+            get => _marker ?? _markers?.FirstOrDefault();
+            set { _marker = value; _markerFallback = null; }
+        }
+
+        /// <summary>
+        /// All markers. Falls back to <see cref="Marker"/> for values saved before multiple markers were supported.
+        /// </summary>
+        [DataMember(Name = "markers")]
+        public IReadOnlyList<MarkerModel> Markers
+        {
+            get
+            {
+                if (_markers is { Count: > 0 })
+                {
+                    return _markers;
+                }
+
+                if (_marker is null)
+                    return Array.Empty<MarkerModel>();
+
+                return _markerFallback ??= new[] { new MarkerModel { Latitude = _marker.Latitude, Longitude = _marker.Longitude } };
+            }
+            set => _markers = value;
+        }
         
         [DataMember(Name = "boundingBox", IsRequired = true)]
         public BoundingBoxModel BoundingBox { get; set; }
@@ -71,5 +105,12 @@ namespace Bergmania.OpenStreetMap.Core
         
         [DataMember(Name = "longitude", IsRequired = true)]
         public decimal Longitude { get; set; }
+    }
+
+    [DataContract]
+    public class MarkerModel : LatitudeLongitudeModel
+    {
+        [DataMember(Name = "title")]
+        public string Title { get; set; }
     }
 }
