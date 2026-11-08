@@ -20,8 +20,8 @@ namespace Umbraco.Extensions
                 tileLayerAttribution = model.Configuration?.TileLayerAttribution ?? DefaultAttribution
             };
 
-            var data = JavaScriptEncoder.Default.Encode(JsonConvert.SerializeObject(model));
-            var defaultConfig = JavaScriptEncoder.Default.Encode(JsonConvert.SerializeObject(config));
+            var data = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(model));
+            var defaultConfig = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(config));
 
             return new HtmlString($"<div data-openstreetmap=\"{data}\" data-openstreetmapdefaultconfig=\"{defaultConfig}\" style=\"width: 100%; height: 400px;\"></div>");
         }
