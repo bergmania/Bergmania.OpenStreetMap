@@ -17,6 +17,7 @@ namespace Bergmania.OpenStreetMap.Core
         
         private LatitudeLongitudeModel _marker;
         private IReadOnlyList<MarkerModel> _markers;
+        private IReadOnlyList<MarkerModel> _markerFallback;
 
         /// <summary>
         /// The first marker. Falls back to the first of <see cref="Markers"/> when only those are stored.
@@ -25,7 +26,7 @@ namespace Bergmania.OpenStreetMap.Core
         public LatitudeLongitudeModel Marker
         {
             get => _marker ?? _markers?.FirstOrDefault();
-            set => _marker = value;
+            set { _marker = value; _markerFallback = null; }
         }
 
         /// <summary>
@@ -41,9 +42,10 @@ namespace Bergmania.OpenStreetMap.Core
                     return _markers;
                 }
 
-                return _marker is null
-                    ? Array.Empty<MarkerModel>()
-                    : new[] { new MarkerModel { Latitude = _marker.Latitude, Longitude = _marker.Longitude } };
+                if (_marker is null)
+                    return Array.Empty<MarkerModel>();
+
+                return _markerFallback ??= new[] { new MarkerModel { Latitude = _marker.Latitude, Longitude = _marker.Longitude } };
             }
             set => _markers = value;
         }

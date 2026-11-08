@@ -95,9 +95,9 @@ export class AutoSuggestElement extends LitElement {
         return Promise.resolve([]);
     }
 
-    reset() { 
-        this.data = []; 
-        this.list.innerHTML = `<option value="">`;  
+    reset() {
+        this.data = [];
+        this.list.replaceChildren(new Option(''));
         this.input.setCustomValidity('');
     }
 
@@ -118,8 +118,11 @@ export class AutoSuggestElement extends LitElement {
 		}
 
         this.data = await this.getSuggestion(value);
-        this.list.innerHTML = this.data.map(obj => `<option value="${obj.name}" data-obj='${obj ? JSON.stringify(obj):''}'>${obj.name}</option>
-`).join('')
+        this.list.replaceChildren(...this.data.map(obj => {
+            const option = new Option(obj.name, obj.name);
+            option.dataset.obj = JSON.stringify(obj);
+            return option;
+        }))
 
 	}
 

@@ -18,10 +18,38 @@ public class LeafletRenderingTests
         var html = model.LeafletRendering().ToString()!;
 
         await Assert.That(html).DoesNotContain("<script>");
-        await Assert.That(html).Contains("&lt;script&gt;");
-        await Assert.That(html).Contains("&#x27;");
+        await Assert.That(html).Contains("\\u003Cscript\\u003E");
+        await Assert.That(html).Contains("it\\u0027s");
         await Assert.That(html).Contains("data-openstreetmap=");
         await Assert.That(html).Contains("data-openstreetmapdefaultconfig=");
+    }
+
+    [Test]
+    public async Task LeafletRendering_UsesDoubleQuotedAttributes()
+    {
+        var model = CreateModel();
+        model.Configuration = new OpenStreetMapConfiguration();
+
+        var html = model.LeafletRendering().ToString()!;
+
+        await Assert.That(html).Contains("data-openstreetmap=\"");
+        await Assert.That(html).DoesNotContain("data-openstreetmap='");
+    }
+
+    [Test]
+    public async Task LeafletRendering_SingleQuoteInTitle_DoesNotBreakAttribute()
+    {
+        var model = CreateModel();
+        model.Markers = new[]
+        {
+            new MarkerModel { Latitude = 55.0m, Longitude = 10.0m, Title = "McDonald's" }
+        };
+        model.Configuration = new OpenStreetMapConfiguration();
+
+        var html = model.LeafletRendering().ToString()!;
+
+        await Assert.That(html).DoesNotContain("McDonald's");
+        await Assert.That(html).Contains("McDonald\\u0027s");
     }
 
     [Test]
@@ -41,7 +69,7 @@ public class LeafletRenderingTests
     }
 
     [Test]
-    public async Task LeafletRendering_WithNullConfig_DoesNotThrow()
+    public async Task LeafletRendering_WithNullConfig_FallsBackToDefaultTileLayer()
     {
         var model = CreateModel();
         model.Configuration = null;
@@ -49,7 +77,8 @@ public class LeafletRenderingTests
         var html = model.LeafletRendering().ToString()!;
 
         await Assert.That(html).Contains("data-openstreetmapdefaultconfig=");
-        await Assert.That(html).Contains("&quot;tileLayer&quot;:null");
+        await Assert.That(html).Contains("tile.openstreetmap.org");
+        await Assert.That(html).Contains("OpenStreetMap contributors");
     }
 
     private static OpenStreetMapModel CreateModel() => new()

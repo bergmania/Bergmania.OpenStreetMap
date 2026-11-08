@@ -9,27 +9,28 @@ namespace Umbraco.Extensions
 {
     public static class OpenStreetMapExtensions
     {
+        private const string DefaultTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        private const string DefaultAttribution = "Map data © OpenStreetMap contributors";
+
         public static IHtmlContent LeafletRendering(this OpenStreetMapModel model)
         {
-            // The configuration has no data members, so it serializes to an empty object on its own.
             var config = new
             {
-                tileLayer = model.Configuration?.TileLayer,
-                tileLayerAttribution = model.Configuration?.TileLayerAttribution
+                tileLayer = model.Configuration?.TileLayer ?? DefaultTileLayer,
+                tileLayerAttribution = model.Configuration?.TileLayerAttribution ?? DefaultAttribution
             };
 
-            // Encoded, as marker titles are free text and would otherwise be able to break out of the attribute.
-            var data = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(model));
-            var defaultConfig = HtmlEncoder.Default.Encode(JsonConvert.SerializeObject(config));
+            var data = JavaScriptEncoder.Default.Encode(JsonConvert.SerializeObject(model));
+            var defaultConfig = JavaScriptEncoder.Default.Encode(JsonConvert.SerializeObject(config));
 
-            return new HtmlString(@$"<div data-openstreetmap='{data}' data-openstreetmapdefaultconfig='{defaultConfig}' style='width: 100%; height: 400px;'></div>");
+            return new HtmlString($"<div data-openstreetmap=\"{data}\" data-openstreetmapdefaultconfig=\"{defaultConfig}\" style=\"width: 100%; height: 400px;\"></div>");
         }
         
         public static IHtmlContent LeafletScripts(this IHtmlHelper htmlHelper)
         {
             return new HtmlString(@"
-<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' />
-<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>
+<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' integrity='sha256-BPfK9M5v34c2XP6p0cxVz1mUQLst0gTLk0mlc7kuodA=' crossorigin='anonymous' />
+<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js' integrity='sha256-yDc0eil8GjWFKqN1OSzHSVCiuGghTosZCcRje4tj7iQ=' crossorigin='anonymous'></script>
 <script>
 
 let elements = document.querySelectorAll('[data-openstreetmap]');

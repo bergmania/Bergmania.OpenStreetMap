@@ -139,6 +139,36 @@ public class OpenStreetMapModelTests
         await Assert.That(html).DoesNotContain("marker=");
     }
 
+    [Test]
+    public async Task Markers_FallbackFromMarker_ReturnsSameReference()
+    {
+        var model = new OpenStreetMapModel
+        {
+            Marker = new LatitudeLongitudeModel { Latitude = 55.0m, Longitude = 10.0m }
+        };
+
+        var first = model.Markers;
+        var second = model.Markers;
+
+        await Assert.That(first).IsSameReferenceAs(second);
+    }
+
+    [Test]
+    public async Task Markers_FallbackCache_ClearedWhenMarkerSet()
+    {
+        var model = new OpenStreetMapModel
+        {
+            Marker = new LatitudeLongitudeModel { Latitude = 55.0m, Longitude = 10.0m }
+        };
+
+        var before = model.Markers;
+        model.Marker = new LatitudeLongitudeModel { Latitude = 60.0m, Longitude = 12.0m };
+        var after = model.Markers;
+
+        await Assert.That(before).IsNotSameReferenceAs(after);
+        await Assert.That(after[0].Latitude).IsEqualTo(60.0m);
+    }
+
     private static BoundingBoxModel CreateBoundingBox() => new()
     {
         SouthWestCorner = new LatitudeLongitudeModel { Latitude = 54.0m, Longitude = -2.0m },
