@@ -273,7 +273,7 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
                             label=${this.localize.term('osm_markerTitle')}
                             placeholder=${this.localize.term('osm_markerTitle')}
                             .value=${marker.title ?? ''}
-                            @input=${(e: InputEvent) => this.setTitle(index, (e.target as UUIInputElement).value as string)}
+                            @change=${(e: Event) => this.setTitle(index, (e.target as UUIInputElement).value as string)}
                         ></uui-input>
                         ${
                             this._showCoordinates

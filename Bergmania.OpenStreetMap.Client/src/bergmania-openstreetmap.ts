@@ -156,12 +156,13 @@ export class BermaniaOpenstreetmap extends LitElement {
     });
   }
 
-  private createMarker(latLng: LatLng, index: number) {
+  private createMarker(latLng: LatLng, _index: number) {
     const marker: Marker = L.marker(latLng, { draggable: true, icon: ICON }).addTo(this._map);
-    // Markers are only removed from the end of the list, so a marker keeps its index.
     marker.on('dragend', () => {
+      const currentIndex = this._leafletMarkers.indexOf(marker);
+      if (currentIndex < 0) return;
       const moved = {latitude: marker.getLatLng().lat, longitude: marker.getLatLng().lng};
-      this._markers = this._markers.map((existing, i) => i === index ? {...existing, ...moved} : existing);
+      this._markers = this._markers.map((existing, i) => i === currentIndex ? {...existing, ...moved} : existing);
       this.updateModel();
     });
     return marker;
