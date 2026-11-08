@@ -45,7 +45,13 @@
             {
               "alias": "defaultPosition",
               "label": "Default Position",
-              "propertyEditorUiAlias": "Bergmania.PropertyEditorUi.OpenStreetMap"
+              "propertyEditorUiAlias": "Bergmania.PropertyEditorUi.OpenStreetMap",
+              "config": [
+                { "alias": "allowMultipleMarkers", "value": true },
+                { "alias": "showSearch", "value": true },
+                { "alias": "showSetMarkerByCoordinates", "value": true },
+                { "alias": "allowClear", "value": true }
+              ]
             },
             {
               "alias": "showSearch",

@@ -75,19 +75,17 @@ export default class BergmaniaPropertyEditorUIOpenStreetMapElement extends UmbEl
         return this.value?.marker === null || this.value?.markers ? [] : undefined;
     }
 
-    /**
-     * The markers shown on the map: only the first one unless multiple markers are allowed.
-     * With multiple markers, new content starts empty; the default position only sets the zoom and area.
-     */
+    private get defaultMarkers(): MarkerModel[] {
+        return this._defaultPosition?.markers
+            ?? (this._defaultPosition?.marker ? [this._defaultPosition.marker] : []);
+    }
+
     private get markers(): MarkerModel[] {
         const stored = this.storedMarkers();
         if (this._multiple) {
-            return stored ?? [];
+            return stored ?? this.defaultMarkers;
         }
-        const markers = stored
-            ?? this._defaultPosition?.markers
-            ?? (this._defaultPosition?.marker ? [this._defaultPosition.marker] : []);
-        return markers.slice(0, 1);
+        return (stored ?? this.defaultMarkers).slice(0, 1);
     }
 
     private setMarkers(markers: MarkerModel[], boundingBox?: BoundingBoxModel) {
