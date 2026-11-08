@@ -11,7 +11,7 @@ public class LeafletRenderingTests
         var model = CreateModel();
         model.Markers = new[]
         {
-            new MarkerModel { Latitude = 55.0m, Longitude = 10.0m, Title = "<script>alert('xss')</script>" }
+            new MarkerModel { Latitude = 55.0m, Longitude = 10.0m, Title = "it's a <script>test</script>" }
         };
         model.Configuration = new OpenStreetMapConfiguration();
 
@@ -19,6 +19,7 @@ public class LeafletRenderingTests
 
         await Assert.That(html).DoesNotContain("<script>");
         await Assert.That(html).Contains("&lt;script&gt;");
+        await Assert.That(html).Contains("&#x27;");
         await Assert.That(html).Contains("data-openstreetmap=");
         await Assert.That(html).Contains("data-openstreetmapdefaultconfig=");
     }
@@ -40,7 +41,7 @@ public class LeafletRenderingTests
     }
 
     [Test]
-    public async Task LeafletRendering_WithNullConfig_SerializesNullFields()
+    public async Task LeafletRendering_WithNullConfig_DoesNotThrow()
     {
         var model = CreateModel();
         model.Configuration = null;
@@ -48,6 +49,7 @@ public class LeafletRenderingTests
         var html = model.LeafletRendering().ToString()!;
 
         await Assert.That(html).Contains("data-openstreetmapdefaultconfig=");
+        await Assert.That(html).Contains("&quot;tileLayer&quot;:null");
     }
 
     private static OpenStreetMapModel CreateModel() => new()

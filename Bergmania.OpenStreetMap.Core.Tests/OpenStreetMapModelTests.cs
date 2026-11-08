@@ -95,6 +95,22 @@ public class OpenStreetMapModelTests
     }
 
     [Test]
+    public async Task Marker_WhenBothSet_ReturnsLegacyMarker()
+    {
+        var model = new OpenStreetMapModel
+        {
+            Marker = new LatitudeLongitudeModel { Latitude = 1.0m, Longitude = 2.0m },
+            Markers = new[]
+            {
+                new MarkerModel { Latitude = 55.0m, Longitude = 10.0m }
+            }
+        };
+
+        await Assert.That(model.Marker!.Latitude).IsEqualTo(1.0m);
+        await Assert.That(model.Marker.Longitude).IsEqualTo(2.0m);
+    }
+
+    [Test]
     public async Task WriteTo_WithMarker_IncludesMarkerInUrl()
     {
         var model = new OpenStreetMapModel
